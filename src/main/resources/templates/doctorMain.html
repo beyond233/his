@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>寻找医生</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<div th:insert="index::comHeadBar"></div>
+<div style="margin-top: 30px">
+    <div style="margin:0 auto;  width:1220px;height:700px">
+        <!--按照科室和医生名称搜索医生-->
+        <div>
+            <blockquote class="layui-elem-quote">搜索医生：查看详细信息</blockquote>
+            <div>
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">科室类型</label>
+                            <div class="layui-input-inline">
+                                <select name="departmentType" id="departType-select" lay-filter="filter1">
+                                    <option value="" id="op-select1">请选择类型</option>
+                                    <option th:each="departType:${departTypeList}" th:text="${departType}"
+                                            th:value="${departType}">科室类型
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">科室名称</label>
+                            <div class="layui-input-inline">
+                                <select name="departmentName" id="departName-select" lay-filter="filter2">
+                                    <option value="">请选择科室</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">医生名称</label>
+                            <div class="layui-input-inline">
+                                <select name="doctorName" id="doctorName-select" lay-filter="filter3">
+                                    <option value="">请选择医生</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-icon">
+                            <div class="layui-input-block">
+                                <a id="searchBtn" class="layui-btn layui-btn-normal layui-btn-disabled">
+                                    <span class="layui-icon-about">&nbsp;详情查看</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div style="margin-left: 8px;margin-bottom: 8px">
+                    <span class="layui-badge layui-bg-blue">Tips</span>
+                    <span style="color: grey;font-size: small">:&nbsp;请先选择对应的科室,再点击右侧按钮查看医生详细信息、出诊安排等</span><br>
+                </div>
+            </div>
+        </div>
+        <!--专家出诊表-->
+        <div style="margin-top: 20px">
+            <blockquote class="layui-elem-quote">专家出诊表</blockquote>
+            <div style="width:1200px;margin: 20px auto 0;">
+                <table id="departTable" class="layui-table" style="text-align: center"
+                       lay-data="{url: '/register/expertRegister/data',id:'test3'}" lay-filter="test3">
+                    <thead>
+                    <tr style="text-align: center">
+                        <td lay-data="{field:'departmentType', width:150}">科室类型</td>
+                        <td lay-data="{field:'departmentName', width: 120}">科室名称</td>
+                        <td lay-data="{field:'empName', width:150}">出诊专家</td>
+                        <td lay-data="{field:'registerDate', width: 120, sort: true}">出诊时间</td>
+                        <td lay-data="{field:'registerAmount', width: 120, sort: true}">总号数</td>
+                        <td lay-data="{field:'registerBalance', width: 120, sort: true}">剩余号源</td>
+                        <td lay-data="{field:'registerPrice',  width: 180}">医事服务费(单位：元)</td>
+                        <td lay-data="{field:'right', edit: 'register',toolbar: '#barDemo', Width: 70}">预约挂号</td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<div style="float: left;width: 100%">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-docter").attr("style", "color:green");
+    layui.use('form', function () {
+        var form = layui.form;
+        let searchBtn = $("#searchBtn");
+        let departNameSelect = $("#departName-select");
+        let doctorNameSelect = $("#doctorName-select");
+        //科室类型选择框
+        form.on('select(filter1)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            $.get("/department/type/data?type=" + data.value, function (result) {
+                departNameSelect.empty();
+                departNameSelect.append("<option value=''>请选择类型</option>");
+                departNameSelect.empty();
+                departNameSelect.append("<option value=''>请选择科室</option>");
+                for (let i = 0; i < result['total']; i++) {
+                    let departmentName = result['data'][i].departmentName;
+                    let departmentId = result['data'][i].departmentId;
+                    $("#departName-select").append("<option value='" + departmentId + "'>" + departmentName + "</option>");
+                    form.render('select'); //刷新select选择框渲染
+                }
+            });
+            console.log(data.othis); //得到美化后的DOM对象
+        });
+        //科室名称选择框
+        form.on('select(filter2)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            $.get("/employee/doctor/departId/data?departId=" + data.value, function (result) {
+                doctorNameSelect.empty();
+                doctorNameSelect.append("<option value=''>请选择科室</option>");
+                for (let i = 0; i < result.length; i++) {
+                    let empId = result[i].empId;
+                    let empName = result[i].empName;
+                    $("#doctorName-select").append("<option value='" + empId + "'>" + empName + "</option>");
+                    form.render('select'); //刷新select选择框渲染
+                }
+            });
+            console.log(data.othis); //得到美化后的DOM对象
+        });
+        //科室名称选择框
+        form.on('select(filter3)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            $.get("/employee/" + data.value, function (result) {
+                if (result != null) {
+                    searchBtn.attr("class", "layui-btn layui-btn-normal");
+                    searchBtn.attr("href", "/employee/doctorIntro/page/" + data.value);
+                }
+            });
+            console.log(data.othis); //得到美化后的DOM对象
+        });
+    });
+
+    /**专家出诊表**/
+    layui.use('table', function () {
+        var table = layui.table;
+        //监听行工具事件
+        table.on('tool(test3)', function (obj) {
+            var data = obj.data;
+            let registerId = data.registerId;
+            if (obj.event === 'register') {
+                layer.confirm('确定挂号吗？', {skin: 'layui-layer-molv'}, function (index) {
+                    const url = "/register/" + registerId;
+                    $.post(url, function (result) {
+                        layui.use('layer', function () {
+                            const layer = layui.layer;
+                            if (result === "login") {
+                                //提醒用户需先登录再进行预约，跳转登录界面
+                                layer.confirm('先登录再进行预约', {
+                                    skin: 'layui-layer-molv' //样式类名
+                                    , btn: ['立即登录', '再等等'] //按钮
+                                }, function () {
+                                    $("#login").append("<span></span>");
+                                    $("#login span").click();
+                                }, function () {
+                                    layer.msg("若还未注册，请先注册再登录");
+                                });
+                            } else layer.msg("预约成功");
+                        });
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+
+
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-normal" lay-event="register">预约</a>
+</script>
+</body>
+</html>

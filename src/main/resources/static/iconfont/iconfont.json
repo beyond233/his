@@ -1,0 +1,44 @@
+{
+  "id": "1697129",
+  "name": "his",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1001332",
+      "name": "南京地铁",
+      "font_class": "changyonglogo18",
+      "unicode": "e70b",
+      "unicode_decimal": 59147
+    },
+    {
+      "icon_id": "1711579",
+      "name": "南京地铁",
+      "font_class": "Nanjing_metro_logo",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "1427",
+      "name": "公交",
+      "font_class": "gongjiao",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "5910514",
+      "name": "南京地铁",
+      "font_class": "nanjingditie",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "2276887",
+      "name": "地铁",
+      "font_class": "ditie",
+      "unicode": "e65f",
+      "unicode_decimal": 58975
+    }
+  ]
+}

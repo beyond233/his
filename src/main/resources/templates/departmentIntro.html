@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${department.departmentName}">科室名称</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<div th:insert="index::comHeadBar"></div>
+<div style="margin: auto;width: 1220px">
+    <div style="font-size: small">
+        <span>您现在的位置：</span>
+        <a th:href="@{/index.html}">首页&nbsp;&nbsp;></a>
+        <a th:href="@{/department/page}">寻找科室&nbsp;&nbsp;></a>
+        <a th:href="@{'/department/'+${department.departmentId}}" th:text="${department.departmentName}"
+           class="greenBar">科室名称</a>
+    </div>
+    <div>
+        <!--科室名称-->
+        <div style="margin: auto;width: 150px">
+            <h2 th:text="${department.departmentName}"></h2>
+        </div>
+        <!--科室简介-->
+        <fieldset class="layui-elem-field layui-field-title">
+            <blockquote class="layui-elem-quote">简介</blockquote>
+            <div class="layui-field-box">
+                <p style="text-indent:2em;line-height:30px;" th:text="${department.departmentInfo}"></p>
+            </div>
+        </fieldset>
+        <!--科室位置-->
+        <fieldset class="layui-elem-field layui-field-title">
+            <blockquote class="layui-elem-quote">地址</blockquote>
+            <div class="layui-field-box">
+                <b>位置：</b> <span th:text="${department.departmentAddr}"></span>
+            </div>
+        </fieldset>
+    </div>
+    <!--    <div>-->
+    <!--        <h2>这里展示该科室的专家</h2>-->
+    <!--    </div>-->
+    <div>
+        <blockquote class="layui-elem-quote">科室排班信息</blockquote>
+        <table class="layui-table" style="text-align: center">
+            <thead>
+            <tr>
+                <td>出诊时间</td>
+                <td>出诊医生</td>
+                <td>总号数</td>
+                <td>剩余号源</td>
+                <td>挂号费用</td>
+                <td>预约挂号</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reg:${registerList}">
+                <td th:text="${reg.registerDate}"></td>
+                <td>
+                    <a th:href="@{'/employee/doctorIntro/page/'+${reg.empId}}" th:text="${reg.empName}"></a>
+                </td>
+                <td th:text="${reg.registerAmount}"></td>
+                <td th:text="${reg.registerBalance}"></td>
+                <td th:text="${'￥'+reg.registerPrice+'元'}"></td>
+                <td>
+                    <button class="layui-btn layui-btn-normal" th:onclick="userRegister([[${reg.registerId}]]);">预约挂号
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--底部-->
+<div style="float: left;width: 100%;margin-top: 100px">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-department").attr("style", "color:green");
+
+    /**发送预约请求**/
+    function userRegister(registerId) {
+        const url = "/register/" + registerId;
+        $.post(url, function (result) {
+            layui.use('layer', function () {
+                const layer = layui.layer;
+                if (result === "login") {
+                    //提醒用户需先登录再进行预约，跳转登录界面
+                    layer.confirm('先登录再进行预约', {
+                        skin: 'layui-layer-molv' //样式类名
+                        , btn: ['立即登录', '再等等'] //按钮
+                    }, function () {
+                        $("#login").append("<span></span>");
+                        $("#login span").click();
+                    }, function () {
+                        layer.msg("若还未注册，请先注册再登录");
+                    });
+                } else layer.msg("预约成功");
+            });
+        });
+        return false;
+    }
+</script>
+
+</body>
+</html>

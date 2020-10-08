@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond233.his.mapper.EmployeeMapper">
+    <!--通过手机号查询员工-->
+    <select id="selectEmpByEmpPhone" resultType="com.beyond233.his.entity.Employee">
+        select *
+        from emp
+        where emp_phone = #{empPhone};
+    </select>
+    <!--查询最大id-->
+    <select id="selectMaxId" resultType="integer">
+        SELECT
+        emp_id
+        FROM
+        emp
+        WHERE
+        emp_id = ( SELECT MAX( emp_id ) FROM emp );
+    </select>
+    <!--查询所有的科室类型-->
+    <select id="selectAllDepartmentTypes" resultType="String">
+        SELECT DISTINCT department_type FROM department;
+    </select>
+    <!--根据科室类型查询出对应的科室id，name的集合-->
+    <select id="selectDepartIdAndNameByType" resultType="com.beyond233.his.vo.DepartmentIdAndNameRecord">
+        SELECT department_id,department_name FROM department WHERE department_type=#{departType};
+    </select>
+    <!--查询所有科室id和对应的名称-->
+    <select id="selectAllDepartIdAndName" resultType="com.beyond233.his.vo.DepartmentIdAndNameRecord">
+        SELECT department_id,department_name FROM department;
+    </select>
+    <resultMap id="BaseResultMap" type="com.beyond233.his.entity.Employee">
+        <id column="emp_id" jdbcType="INTEGER" property="empId"/>
+        <result column="emp_password" jdbcType="VARCHAR" property="empPassword"/>
+        <result column="emp_name" jdbcType="VARCHAR" property="empName"/>
+        <result column="emp_sex" jdbcType="VARCHAR" property="empSex"/>
+        <result column="emp_age" jdbcType="INTEGER" property="empAge"/>
+        <result column="emp_phone" jdbcType="VARCHAR" property="empPhone"/>
+        <result column="emp_career" jdbcType="VARCHAR" property="empCareer"/>
+        <result column="emp_title" jdbcType="VARCHAR" property="empTitle"/>
+        <result column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="emp_awards" jdbcType="VARCHAR" property="empAwards"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.beyond233.his.entity.Employee">
+        <result column="emp_intro" jdbcType="LONGVARCHAR" property="empIntro"/>
+        <result column="emp_major" jdbcType="LONGVARCHAR" property="empMajor"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        emp_id, emp_password, emp_name, emp_sex, emp_age, emp_phone, emp_career, emp_title,
+        department_id, emp_awards, role_id
+    </sql>
+    <sql id="Blob_Column_List">
+        emp_intro, emp_major
+    </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.beyond233.his.entity.EmployeeExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from emp
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.beyond233.his.entity.EmployeeExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from emp
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from emp
+        where emp_id = #{empId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from emp
+        where emp_id = #{empId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.beyond233.his.entity.EmployeeExample">
+        delete from emp
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.beyond233.his.entity.Employee">
+        insert into emp (emp_id, emp_password, emp_name,
+        emp_sex, emp_age, emp_phone,
+        emp_career, emp_title, department_id,
+        emp_awards, role_id, emp_intro,
+        emp_major)
+        values (#{empId,jdbcType=INTEGER}, #{empPassword,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR},
+        #{empSex,jdbcType=VARCHAR}, #{empAge,jdbcType=INTEGER}, #{empPhone,jdbcType=VARCHAR},
+        #{empCareer,jdbcType=VARCHAR}, #{empTitle,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER},
+        #{empAwards,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{empIntro,jdbcType=LONGVARCHAR},
+        #{empMajor,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.beyond233.his.entity.Employee">
+        insert into emp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="empId != null">
+                emp_id,
+            </if>
+            <if test="empPassword != null">
+                emp_password,
+            </if>
+            <if test="empName != null">
+                emp_name,
+            </if>
+            <if test="empSex != null">
+                emp_sex,
+            </if>
+            <if test="empAge != null">
+                emp_age,
+            </if>
+            <if test="empPhone != null">
+                emp_phone,
+            </if>
+            <if test="empCareer != null">
+                emp_career,
+            </if>
+            <if test="empTitle != null">
+                emp_title,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="empAwards != null">
+                emp_awards,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="empIntro != null">
+                emp_intro,
+            </if>
+            <if test="empMajor != null">
+                emp_major,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="empId != null">
+                #{empId,jdbcType=INTEGER},
+            </if>
+            <if test="empPassword != null">
+                #{empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="empName != null">
+                #{empName,jdbcType=VARCHAR},
+            </if>
+            <if test="empSex != null">
+                #{empSex,jdbcType=VARCHAR},
+            </if>
+            <if test="empAge != null">
+                #{empAge,jdbcType=INTEGER},
+            </if>
+            <if test="empPhone != null">
+                #{empPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="empCareer != null">
+                #{empCareer,jdbcType=VARCHAR},
+            </if>
+            <if test="empTitle != null">
+                #{empTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="empAwards != null">
+                #{empAwards,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="empIntro != null">
+                #{empIntro,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="empMajor != null">
+                #{empMajor,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.beyond233.his.entity.EmployeeExample" resultType="java.lang.Long">
+        select count(*) from emp
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update emp
+        <set>
+            <if test="record.empId != null">
+                emp_id = #{record.empId,jdbcType=INTEGER},
+            </if>
+            <if test="record.empPassword != null">
+                emp_password = #{record.empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="record.empName != null">
+                emp_name = #{record.empName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.empSex != null">
+                emp_sex = #{record.empSex,jdbcType=VARCHAR},
+            </if>
+            <if test="record.empAge != null">
+                emp_age = #{record.empAge,jdbcType=INTEGER},
+            </if>
+            <if test="record.empPhone != null">
+                emp_phone = #{record.empPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.empCareer != null">
+                emp_career = #{record.empCareer,jdbcType=VARCHAR},
+            </if>
+            <if test="record.empTitle != null">
+                emp_title = #{record.empTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.departmentId != null">
+                department_id = #{record.departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.empAwards != null">
+                emp_awards = #{record.empAwards,jdbcType=VARCHAR},
+            </if>
+            <if test="record.roleId != null">
+                role_id = #{record.roleId,jdbcType=INTEGER},
+            </if>
+            <if test="record.empIntro != null">
+                emp_intro = #{record.empIntro,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.empMajor != null">
+                emp_major = #{record.empMajor,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update emp
+        set emp_id = #{record.empId,jdbcType=INTEGER},
+        emp_password = #{record.empPassword,jdbcType=VARCHAR},
+        emp_name = #{record.empName,jdbcType=VARCHAR},
+        emp_sex = #{record.empSex,jdbcType=VARCHAR},
+        emp_age = #{record.empAge,jdbcType=INTEGER},
+        emp_phone = #{record.empPhone,jdbcType=VARCHAR},
+        emp_career = #{record.empCareer,jdbcType=VARCHAR},
+        emp_title = #{record.empTitle,jdbcType=VARCHAR},
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+        emp_awards = #{record.empAwards,jdbcType=VARCHAR},
+        role_id = #{record.roleId,jdbcType=INTEGER},
+        emp_intro = #{record.empIntro,jdbcType=LONGVARCHAR},
+        emp_major = #{record.empMajor,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update emp
+        set emp_id = #{record.empId,jdbcType=INTEGER},
+        emp_password = #{record.empPassword,jdbcType=VARCHAR},
+        emp_name = #{record.empName,jdbcType=VARCHAR},
+        emp_sex = #{record.empSex,jdbcType=VARCHAR},
+        emp_age = #{record.empAge,jdbcType=INTEGER},
+        emp_phone = #{record.empPhone,jdbcType=VARCHAR},
+        emp_career = #{record.empCareer,jdbcType=VARCHAR},
+        emp_title = #{record.empTitle,jdbcType=VARCHAR},
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+        emp_awards = #{record.empAwards,jdbcType=VARCHAR},
+        role_id = #{record.roleId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.beyond233.his.entity.Employee">
+        update emp
+        <set>
+            <if test="empPassword != null">
+                emp_password = #{empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="empName != null">
+                emp_name = #{empName,jdbcType=VARCHAR},
+            </if>
+            <if test="empSex != null">
+                emp_sex = #{empSex,jdbcType=VARCHAR},
+            </if>
+            <if test="empAge != null">
+                emp_age = #{empAge,jdbcType=INTEGER},
+            </if>
+            <if test="empPhone != null">
+                emp_phone = #{empPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="empCareer != null">
+                emp_career = #{empCareer,jdbcType=VARCHAR},
+            </if>
+            <if test="empTitle != null">
+                emp_title = #{empTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="empAwards != null">
+                emp_awards = #{empAwards,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="empIntro != null">
+                emp_intro = #{empIntro,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="empMajor != null">
+                emp_major = #{empMajor,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where emp_id = #{empId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.beyond233.his.entity.Employee">
+        update emp
+        set emp_password = #{empPassword,jdbcType=VARCHAR},
+        emp_name = #{empName,jdbcType=VARCHAR},
+        emp_sex = #{empSex,jdbcType=VARCHAR},
+        emp_age = #{empAge,jdbcType=INTEGER},
+        emp_phone = #{empPhone,jdbcType=VARCHAR},
+        emp_career = #{empCareer,jdbcType=VARCHAR},
+        emp_title = #{empTitle,jdbcType=VARCHAR},
+        department_id = #{departmentId,jdbcType=INTEGER},
+        emp_awards = #{empAwards,jdbcType=VARCHAR},
+        role_id = #{roleId,jdbcType=INTEGER},
+        emp_intro = #{empIntro,jdbcType=LONGVARCHAR},
+        emp_major = #{empMajor,jdbcType=LONGVARCHAR}
+        where emp_id = #{empId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.beyond233.his.entity.Employee">
+        update emp
+        set emp_password = #{empPassword,jdbcType=VARCHAR},
+        emp_name = #{empName,jdbcType=VARCHAR},
+        emp_sex = #{empSex,jdbcType=VARCHAR},
+        emp_age = #{empAge,jdbcType=INTEGER},
+        emp_phone = #{empPhone,jdbcType=VARCHAR},
+        emp_career = #{empCareer,jdbcType=VARCHAR},
+        emp_title = #{empTitle,jdbcType=VARCHAR},
+        department_id = #{departmentId,jdbcType=INTEGER},
+        emp_awards = #{empAwards,jdbcType=VARCHAR},
+        role_id = #{roleId,jdbcType=INTEGER}
+        where emp_id = #{empId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>预约挂号</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<div th:insert="index::comHeadBar"></div>
+<div style="margin: auto;width: 1220px">
+    <div th:each="type:${departmentList}" style="float: left;width: 1200px;margin-top: 20px">
+        <blockquote class="layui-elem-quote" th:text="${type.departType}" style="font-size: large">科室类型</blockquote>
+        <!--展示该类型下的全部科室-->
+        <div style="margin: 20px auto;width: 1000px ">
+            <div th:each="depart,item:${type.departList}" style="float: left;width:250px;margin-bottom: 15px">
+                <span style="color: #bfbfbf">>&nbsp;</span>
+                <a th:href="@{'/register/info/'+${depart.departmentId}}" th:text="${depart.departmentName}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<div style="float: left;width: 100%">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-register").attr("style", "color:green");
+
+    layui.use('util', function () {
+        var util = layui.util;
+        //执行
+        util.fixbar({
+            bar1: 'layui-icon-help'
+            , bar2: true
+            , bgcolor: "#1F9A6C"
+            , click: function (type) {
+                console.log(type);
+                if (type === 'bar1') {
+                    // $("#")
+                } else if (type === 'bar2') {
+                    $("#bar-a-question").append("<span></span>");
+                    $("#bar-a-question span").click();
+                }
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

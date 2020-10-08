@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header" th:fragment="adminHeadBar" id="adminHeadBar">
+        <div class="layui-logo">人民医院-后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <span th:text="${session.empLogin.empName}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/emp/exit">退出</a></li>
+            <li class="layui-nav-item" style="float: left"><a href="/index.html">医院首页</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black" th:fragment="adminSideBar" id="adminSideBar">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <!--数据总览-->
+                <!--                <li class="layui-nav-item layui-nav-itemed layui-this">-->
+                <!--                    <a href="/emp/adminPage">数据总览</a>-->
+                <!--                </li>-->
+                <!--科室管理-->
+                <li class="layui-nav-item " shiro:hasAnyRoles="admin_super,admin_department">
+                    <a class="" href="javascript:;">科室管理</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="/department/manager/page">统一管理</a>
+                        </dd>
+                        <dd>
+                            <a href="/department/add/page">添加科室</a>
+                        </dd>
+                        <dd th:each="departType:${adminMap.get('typeList')}">
+                            <a th:href="@{'/department/type?type='+${departType}}" th:text="${departType}">科室类型名</a>
+                        </dd>
+                    </dl>
+                </li>
+                <!--医生管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_emp">
+                    <a href="javascript:;">医生管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/doctorManager/page">统一管理</a></dd>
+                        <dd><a href="/admin/doctorAdd/page">添加医生</a></dd>
+                    </dl>
+                </li>
+                <!--患者管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_user">
+                    <a href="javascript:;">患者管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/userManager/page">统一管理</a></dd>
+                    </dl>
+                </li>
+                <!--药品管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_drug">
+                    <a href="javascript:;">药品管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/drugManager/page">数据总览</a></dd>
+                        <dd><a href="/admin/drugAdd/page">添加药品</a></dd>
+                    </dl>
+                </li>
+                <!--新闻公告管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_news">
+                    <a href="#">新闻公告管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/newsManager/page">统一管理</a></dd>
+                        <dd><a href="/admin/newsAdd/page">添加新闻</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">内容主体区域</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © 人民医院 - 后台管理系统
+    </div>
+</div>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+
+    });
+
+</script>
+</body>
+</html>>

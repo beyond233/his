@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404</title>
+</head>
+<body>
+error: [[${error}]]<br>
+时间戳：[[${timestamp}]]<br>
+status:[[${status}]]<br>
+exception:[[${exception}]]<br>
+message:[[${message}]]<br>
+<!--自定义错误信息code:<h4 th:text="${myErrorMessageMap.code}" th:if="${myErrorMessageMap.code}!=null" ></h4>-->
+<!--自定义错误信息message:<h4 th:text="${myErrorMessageMap.message}" th:if="${myErrorMessageMap.message}!=null" ></h4>-->
+
+errors:[[${errors}]]<br>
+</body>
+</html>

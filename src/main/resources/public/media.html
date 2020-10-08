@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="utf-8">
+    <title>HTML媒体测试</title> 
+
+</head>
+<body>
+<div style="margin: auto;width: 50%">
+    <audio controls>
+        <source src="/media/horse.ogg" type="audio/ogg" id="sname">
+        您的浏览器不支持 audio 元素。
+    </audio>
+    <div style="width: 200px;height: 400px;backgroud-color:#f2f2f2;">
+        <button id="s1" onclick="play(1)">草泥马</button>
+        <button id="s2" onclick="play(2)">押尾コータロー%20(押尾光太郎)%20-%20DREAMING</button>
+        <button id="s3" onclick="play(3)">押尾コータロー (押尾光太郎) - FIRST LOVE (初恋)</button>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script>
+    function play(id) {
+        let sname = $("#sname");
+        if (id === 1) {
+            sname.attr('src', "/media/horse.ogg");
+            sname.attr('type', 'audio/ogg');
+        }
+        if (id === 2) {
+            sname.attr('src', "/media/押尾コータロー (押尾光太郎) - DREAMING.mp3");
+            sname.attr('type', 'audio/mpeg');
+        }
+        if (id === 3) {
+            sname.attr('src', "/media/押尾コータロー (押尾光太郎) - FIRST LOVE (初恋).mp3");
+            sname.attr('type', 'audio/mpeg');
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>新闻管理-添加新闻</title>
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header" th:fragment="adminHeadBar" id="adminHeadBar">
+        <div class="layui-logo">人民医院-后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <span th:text="${session.empLogin.empName}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/emp/exit">退出</a></li>
+            <li class="layui-nav-item" style="float: left"><a href="/index.html">医院首页</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black" th:fragment="adminSideBar" id="adminSideBar">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <!--数据总览-->
+                <!--                <li class="layui-nav-item">-->
+                <!--                    <a href="/emp/adminPage">数据总览</a>-->
+                <!--                </li>-->
+                <!--科室管理-->
+                <li class="layui-nav-item " shiro:hasAnyRoles="admin_super,admin_department">
+                    <a class="" href="javascript:;">科室管理</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="/department/manager/page">统一管理</a>
+                        </dd>
+                        <dd>
+                            <a href="/department/add/page">添加科室</a>
+                        </dd>
+                        <dd th:each="departType:${adminMap.get('typeList')}">
+                            <a th:href="@{'/department/type?type='+${departType}}" th:text="${departType}">科室类型名</a>
+                        </dd>
+                    </dl>
+                </li>
+                <!--医生管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_emp">
+                    <a href="javascript:;">医生管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/doctorManager/page">统一管理</a></dd>
+                        <dd><a href="/admin/doctorAdd/page">添加医生</a></dd>
+                    </dl>
+                </li>
+                <!--患者管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_user">
+                    <a href="javascript:;">患者管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/userManager/page">统一管理</a></dd>
+                    </dl>
+                </li>
+                <!--药品管理-->
+                <li class="layui-nav-item" shiro:hasAnyRoles="admin_super,admin_drug">
+                    <a href="javascript:;">药品管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/drugManager/page">数据总览</a></dd>
+                        <dd><a href="/admin/drugAdd/page">添加药品</a></dd>
+                    </dl>
+                </li>
+                <!--新闻公告管理-->
+                <li class="layui-nav-item layui-nav-itemed" shiro:hasAnyRoles="admin_super,admin_news">
+                    <a href="#">新闻公告管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/newsManager/page">统一管理</a></dd>
+                        <dd class="layui-this"><a href="/admin/newsAdd/page">添加新闻</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <blockquote class="layui-elem-quote"><span>添加新闻公告</span></blockquote>
+            <form class="layui-form" action="/news/add" method="post" id="news-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="newsTitle" id="newsTitle-input" lay-verify="pass"
+                                   placeholder="输入新闻或公告的标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">类型</label>
+                        <div class="layui-input-inline">
+                            <select name="newsType" id="newsType-input">
+                                <option value="">请选择类型</option>
+                                <option value="news">新闻</option>
+                                <option value="notice">公告</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">作者</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="newAuthor-input" name="newsAuthor" lay-verify="pass"
+                                   autocomplete="on" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">内容</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="填写新闻或公告的具体内容" id="newsArticle-input" name="newsArticle"
+                                  class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="button" id="addBtn" class="layui-btn">添加</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © 人民医院 - 后台管理系统
+    </div>
+</div>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            // layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('layer', function () {
+        var layer = layui.layui.layer;
+    });
+    //添加按钮
+    $("#addBtn").click(function () {
+        let titleFlag = false;
+        let articleFlag = false;
+        let authorFlag = false;
+        let typeFlag = false;
+        if ($("#newsTitle-input").val().length > 0) {
+            titleFlag = true;
+        } else layer.msg('请填写标题');
+        if ($("#newAuthor-input").val().length > 0) {
+            authorFlag = true;
+        } else layer.msg('请填写作者');
+        if ($("#newsArticle-input").val().length > 0) {
+            articleFlag = true;
+        } else layer.msg('请填写文章内容');
+        if ($("#newsType-input").val().length > 0) {
+            typeFlag = true;
+        } else layer.msg('请填写类型');
+        if (titleFlag && authorFlag && typeFlag && articleFlag) {
+            $.post("/news/add", $("#news-form").serialize(), function (result) {
+                if (result === "success") {
+                    window.location.reload();
+                    layer.msg('添加成功', {time: 9000000, icon: 6});
+                } else layer.msg('添加失败');
+            });
+        }
+    });
+</script>
+</body>
+</html>>

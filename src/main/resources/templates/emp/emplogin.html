@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>员工登录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<!--头部导航栏-->
+<div style="background-color: white">
+    <div th:insert="index::comHeadBar"></div>
+</div>
+<!--中间内容块-->
+<div style="background-color: #F0F0F0;height: 600px">
+
+    <div class="layui-icon"
+         style="width: 400px;height:300px;margin-left: 530px;padding-top:90px;background-color: #f2f2f2">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <h2 style="width: 300px"><span class="layui-icon-username">员工登录</span></h2>
+                </div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="/emp/login" method="post">
+                        <!--账号-->
+                        <div class="layui-form-item layui-icon">
+                            <label class="layui-form-label"><span class="layui-icon-cellphone"
+                                                                  style="font-size:larger;color: #1f9a6c"></span></label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="empPhone" lay-verify="pass" placeholder="请输入账号"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <!--账号验证提示信息-->
+                            <div class="layui-form-mid layui-word-aux" style="display: none">请填写6到12位账号</div>
+                        </div>
+                        <!--密码-->
+                        <div class="layui-form-item layui-icon">
+                            <label class="layui-form-label"><span class="layui-icon-password"
+                                                                  style="font-size:larger;color: #1f9a6c"></span></label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="empPassword" lay-verify="pass" placeholder="请输入密码"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <!--密码验证提示信息-->
+                            <div class="layui-form-mid layui-word-aux" style="display: none">请填写6到12位密码</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即登录</button>
+                                <!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--登录块-->
+    <!--    <div style="width: 400px;height: 400px;margin-left: 530px;padding-top:90px;background-color: #f2f2f2" class="layui-icon">-->
+    <!--        <h2 style="width: 300px"><span class="layui-icon-username">员工登录</span></h2>-->
+    <!--        <hr class="layui-bg-green" style="width: 300px;height: 3px">-->
+    <!--        -->
+    <!--    </div>-->
+</div>
+
+<!--底部-->
+<div style="margin-top: 80px">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+</script>
+</body>
+</html>

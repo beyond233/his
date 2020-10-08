@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>常见问题</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+
+<!--头部导航-->
+<div th:insert="index::comHeadBar"></div>
+<!--中央内容-->
+<div style="margin: auto;width: 90%;height: 600px">
+
+    <!--问题回答-->
+    <div style="margin-bottom: 1px">
+        <div style="margin: auto;width: 1220px;height: 800px">
+            <h2>常见问题</h2>
+            <hr>
+            <div style="margin: auto;width: 1200px">
+                <div style="float: left;width: 600px;height: 320px">
+                    <div style="margin: auto;width: 90%;padding-top: 20px">
+                        <div style="width: 100%;float: left">
+                            <div style="float: left">
+                                <h3>门诊预约</h3>
+                                <hr style="width: 100%;height: 5px" class="layui-bg-orange">
+                            </div>
+                            <div style="float: right;margin-right: 15px">
+                                <a href="#" class="layui-btn layui-btn-radius layui-btn-sm layui-btn-primary">查看更多</a>
+                            </div>
+                        </div>
+                        <div style="width: 100%;float: left">
+                            <div style="width: 50%;float: left">
+                                <img src="/images/200.jpg" style="width: 270px;height: 200px">
+                            </div>
+                            <div style="width: 50%;float: left">
+                                <div style="margin: auto; width: 80%;padding-top: 15px;padding-bottom: 15px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <div th:each="qa:${zmyyList}"
+                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        <a href="#" th:onclick="question([[${qa.qaId}]])" th:text="${qa.qaQ}"></a>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="float: left;width: 600px;height: 320px">
+                    <div style="margin: auto;width: 90%;padding-top: 20px">
+                        <div style="width: 100%;float: left">
+                            <div style="float: left">
+                                <h3>就诊指南</h3>
+                                <hr style="width: 100%;height: 5px" class="layui-bg-blue">
+                            </div>
+                            <div style="float: right;margin-right: 15px">
+                                <a href="#" class="layui-btn layui-btn-radius layui-btn-sm layui-btn-primary">查看更多</a>
+                            </div>
+                        </div>
+                        <div style="width: 100%;float: left">
+                            <div style="width: 50%;float: left">
+                                <img src="/images/doctor.jpg" style="width: 270px;height: 200px">
+                            </div>
+                            <div style="width: 50%;float: left">
+                                <div style="margin: auto; width: 80%;padding-top: 15px;padding-bottom: 15px;">
+                                    <div th:each="qa:${jzznList}"
+                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        <a href="#" th:onclick="question([[${qa.qaId}]])" th:text="${qa.qaQ}"></a>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="float: left;width: 600px;height: 320px">
+                    <div style="margin: auto;width: 90%;padding-top: 20px">
+                        <div style="width: 100%;float: left">
+                            <div style="float: left">
+                                <h3>医疗检查</h3>
+                                <hr style="width: 100%;height: 5px" class="layui-bg-green">
+                            </div>
+                            <div style="float: right;margin-right: 15px">
+                                <a href="#" class="layui-btn layui-btn-radius layui-btn-sm layui-btn-primary">查看更多</a>
+                            </div>
+                        </div>
+                        <div style="width: 100%;float: left">
+                            <div style="width: 50%;float: left">
+                                <img src="/images/hand.jpg" style="width: 270px;height: 200px">
+                            </div>
+                            <div style="width: 50%;float: left">
+                                <div style="margin: auto; width: 80%;padding-top: 15px;padding-bottom: 15px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <div th:each="qa:${yljcList}"
+                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        <a href="#" th:onclick="question([[${qa.qaId}]])" th:text="${qa.qaQ}"></a>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="float: left;width: 600px;height: 320px">
+                    <div style="margin: auto;width: 90%;padding-top: 20px">
+                        <div style="width: 100%;float: left">
+                            <div style="float: left">
+                                <h3>事务办理</h3>
+                                <hr style="width: 100%;height: 5px;" class="layui-bg-red">
+                            </div>
+                            <div style="float: right;margin-right: 15px">
+                                <a href="#" class="layui-btn layui-btn-radius layui-btn-sm layui-btn-primary">查看更多</a>
+                            </div>
+                        </div>
+                        <div style="width: 100%;float: left">
+                            <div style="width: 50%;float: left">
+                                <img src="/images/drug.png" style="width: 270px;height: 200px">
+                            </div>
+                            <div style="width: 50%;float: left">
+                                <div style="margin: auto; width: 80%;padding-top: 15px;padding-bottom: 15px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <div th:each="qa:${swblList}"
+                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        <a href="#" th:onclick="question([[${qa.qaId}]])" th:text="${qa.qaQ}"></a>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--底部-->
+<div style="float: left;width: 100%">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    //注意：如果函数使用到了layer，应先加载layer模块
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+    $("#bar-a-question").attr("style", "color:green");
+
+    /*
+    * 问题信息弹出框
+    * */
+    function question(id) {
+        //获取数据
+        let url = '/qa/' + id;
+        $.get(url, function (data) {
+            if (data != null) {
+                //构建HTML
+                let qa = '<div style="margin: auto;width: 400px;padding-top: 10px">\n' +
+                    '    <div style="margin: auto;width: 100%">\n' +
+                    '        <p>\n' +
+                    '            <b>问：</b>' + data.qaQ + '\n' +
+                    '        </p>\n' +
+                    '        <p style="padding-top: 10px">\n' +
+                    '            <b>答：</b>' + data.qaA + '\n' +
+                    '        </p>\n' +
+                    '    </div>\n' +
+                    '</div>';
+
+                //弹出数据页面框
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['420px', '240px'], //宽高
+                    content: qa
+                });
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

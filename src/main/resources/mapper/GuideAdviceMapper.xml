@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond233.his.mapper.GuideAdviceMapper">
+    <resultMap id="BaseResultMap" type="com.beyond233.his.entity.GuideAdvice">
+        <id column="advice_id" jdbcType="INTEGER" property="adviceId"/>
+        <result column="advice_content" jdbcType="VARCHAR" property="adviceContent"/>
+        <result column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="ansowers" jdbcType="VARCHAR" property="ansowers"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        advice_id, advice_content, department_id, ansowers
+    </sql>
+    <select id="selectByExample" parameterType="com.beyond233.his.entity.GuideAdviceExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from guide_advice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from guide_advice
+        where advice_id = #{adviceId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from guide_advice
+        where advice_id = #{adviceId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.beyond233.his.entity.GuideAdviceExample">
+        delete from guide_advice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.beyond233.his.entity.GuideAdvice">
+        insert into guide_advice (advice_id, advice_content, department_id,
+        ansowers)
+        values (#{adviceId,jdbcType=INTEGER}, #{adviceContent,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER},
+        #{ansowers,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.beyond233.his.entity.GuideAdvice">
+        insert into guide_advice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adviceId != null">
+                advice_id,
+            </if>
+            <if test="adviceContent != null">
+                advice_content,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="ansowers != null">
+                ansowers,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adviceId != null">
+                #{adviceId,jdbcType=INTEGER},
+            </if>
+            <if test="adviceContent != null">
+                #{adviceContent,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="ansowers != null">
+                #{ansowers,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.beyond233.his.entity.GuideAdviceExample" resultType="java.lang.Long">
+        select count(*) from guide_advice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update guide_advice
+        <set>
+            <if test="record.adviceId != null">
+                advice_id = #{record.adviceId,jdbcType=INTEGER},
+            </if>
+            <if test="record.adviceContent != null">
+                advice_content = #{record.adviceContent,jdbcType=VARCHAR},
+            </if>
+            <if test="record.departmentId != null">
+                department_id = #{record.departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.ansowers != null">
+                ansowers = #{record.ansowers,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update guide_advice
+        set advice_id = #{record.adviceId,jdbcType=INTEGER},
+        advice_content = #{record.adviceContent,jdbcType=VARCHAR},
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+        ansowers = #{record.ansowers,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.beyond233.his.entity.GuideAdvice">
+        update guide_advice
+        <set>
+            <if test="adviceContent != null">
+                advice_content = #{adviceContent,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="ansowers != null">
+                ansowers = #{ansowers,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where advice_id = #{adviceId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.beyond233.his.entity.GuideAdvice">
+        update guide_advice
+        set advice_content = #{adviceContent,jdbcType=VARCHAR},
+        department_id = #{departmentId,jdbcType=INTEGER},
+        ansowers = #{ansowers,jdbcType=VARCHAR}
+        where advice_id = #{adviceId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>选择器</title>
+    <script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .one{
+            width:  280px;
+            height: 300px;
+            background-color: grey;
+            border: 1px black solid;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        .mini{
+            width:  100px;
+            height: 100px;
+            background-color: grey;
+            border: 1px black solid;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .hide {
+            display: none;
+
+        }
+
+
+    </style>
+</head>
+<body>
+
+<input type="button" value="" id="btn1"/>
+<input type="button" value="" id="btn2"/>
+<input type="button" value="" id="btn3"/>
+<input type="button" value="" id="btn4"/>
+<input type="button" value="" id="btn5"/>
+
+<br>
+
+<div class="one" id="one">
+    id为one,class为one的div
+    <div class="mini">class为mini</div>
+</div>
+
+<div class="one" id="two" title="test">
+    id为two,class为one,title为test的div
+    <div class="mini" title="other">class为mini.title为other</div>
+    <div class="mini" title="test">class为mini.title为test</div>
+</div>
+
+<div class="one">
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini"></div>
+</div>
+
+<div class="one">
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini" title="test">class为mini.title为test</div>
+</div>
+
+<div style="display:none" class="none">style的display为none的div</div>
+
+<div class="hide">class为hide的div</div>
+
+<div class="one">
+    包含input的type为hidden的div<input type="hidden" size="8">
+</div>
+
+
+<span class="one" id="span">span元素</span>
+
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        .header {
+            display: inline-block;
+            position: relative;
+            background-color: white; /*导航条背景颜色*/
+        }
+
+        .header:hover .downbtn {
+            display: block;
+            background-color: white;
+        }
+
+        .header span:hover {
+            background-color: white /*导航条选中*/
+        }
+
+        .header span {
+            /*padding:10px;*/
+            /*line-height:31px;*/
+            cursor: pointer;
+            color: black; /*导航条字体颜色*/
+        }
+
+        .header .downbtn {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 9px 0px rgba(02, 02, 02, 0.2);
+            min-width: 92px;
+        }
+
+        .header .downbtn li {
+            line-height: 30px;
+            text-align: left;
+            /*padding-left:6px;*/
+        }
+
+        .header .downbtn a:hover {
+            text-decoration: none;
+            color: white; /*下拉菜单选中*/
+            background-color: green;
+        }
+
+        .header .downbtn a {
+            display: block;
+            color: black; /*下拉菜单字体颜色*/
+            width: 100%;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div class="header">
+    <span>下拉列表1</span>
+    <div class="downbtn">
+        <ul>
+            <li><a href="#">下拉列表01</a></li>
+            <li><a href="#">下拉列表02</a></li>
+            <li><a href="#">下拉列表03</a></li>
+            <li><a href="#">下拉列表04</a></li>
+            <li><a href="#">下拉列表05</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="header">
+    <span>下拉列表2</span>
+    <div class="downbtn">
+        <ul>
+            <li><a href="#">下拉列表01</a></li>
+            <li><a href="#">下拉列表02</a></li>
+            <li><a href="#">下拉列表03</a></li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <span>下拉列表3</span>
+    <div class="downbtn">
+        <ul>
+            <li><a href="#">下拉列表01</a></li>
+            <li><a href="#">下拉列表02</a></li>
+        </ul>
+    </div>
+</div>
+
+<div>
+    <p>哈哈哈哈哈哈哈哈哈哈呵呵呵呵呵呵呵呵或</p>
+    <p>哈哈哈哈哈哈哈哈哈哈呵呵呵呵呵呵呵呵或</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>重置密码</title>
+</head>
+<head th:insert="commonPage::header"></head>
+<body>
+<!--头部-->
+<div>
+    <div th:insert="index::comHeadBar"></div>
+</div>
+
+<!--中央内容-->
+<div style="margin: auto;width: 90%;height: 600px" class="bg2">
+    <!--重置密码模块-->
+    <div style="float:right;width: 350px;height: 600px;background-color: whitesmoke">
+        <div style="width: 300px;padding-top: 90px;margin: auto" class="layui-icon">
+            <form class="form-signin" id="resetForm" action="/user/resetPassword" autocomplete="off" method="post">
+                <h1 class="h3 mb-3 font-weight-normal">重置密码</h1>
+                <!--    重置密码结果-->
+                <div class="alert alert-danger" id="signUpVerify" role="alert"
+                     th:if="${not #strings.isEmpty(#request.getAttribute('info'))}">
+                    <span class="layui-icon-face-smile-b" style="font-size: larger"></span>
+                    <span th:text="${#request.getAttribute('info')}"></span>
+                </div>
+                <div class="alert alert-danger" id="signUpVerifyDiv" role="alert" style="display: none">
+
+                </div>
+                <!--    输入手机号和密码-->
+                <label for="phone" class="sr-only" th:text="#{login.id}">手机号</label>
+                <input type="text" id="phone" name="phone" class="form-control" style="margin-top: 40px"
+                       th:placeholder="#{login.id}" placeholder="请输入手机号 " required autofocus>
+                <label for="inputPassword" class="sr-only" th:text="#{login.password}">密码</label>
+                <input type="password" id="inputPassword" name="password" style="margin-top: 10px;margin-bottom: 15px"
+                       class="form-control" th:placeholder="#{login.password}" placeholder="请输入密码" required>
+                <!--                <label for="inputPassword" class="sr-only" th:text="#{signup.password}">再次输入密码</label>-->
+                <!--                <input type="password" id="inputPasswordConfirm" name="userPassword" style="margin-top: 10px;margin-bottom: 15px" class="form-control" th:placeholder="#{signup.password}" placeholder="请输入密码" required>-->
+                <div class="checkbox mb-3">
+                    <!--    忘记密码-->
+                    <a th:href="@{/reset.html}" class="btn-link" th:text="#{login.forget}" style="margin-left:1px"></a>
+                    <!--    已有账号？登录-->
+                    <a th:href="@{/user/login/page}" class="btn-link" th:text="#{signup.login}"
+                       style="margin-left:75px"></a>
+                </div>
+                <input class="btn btn-lg btn-danger btn-block" id="subBtn" type="submit" value="重置密码"></button>
+            </form>
+            <div style="font-size: small;margin-top: 20px;margin-left: 12px">
+                <input type="checkbox" checked>
+                我已阅读并同意相关服务条款和隐私政策
+            </div>
+            <p style="margin-left: 90px;margin-top: 50px" class="mt-5 mb-3 text-muted">
+                &copy; 2019-2020</p>
+        </div>
+    </div>
+</div>
+
+<!--底部-->
+<div style="float: left;width: 100%;margin-top: 80px">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script type="text/javascript" src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+    });
+    layui.use('form', function () {
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond233.his.mapper.NewsMapper">
+    <!--按照时间降序查询指定条数新闻数据-->
+    <select id="selectLastNewsCount" resultType="com.beyond233.his.entity.News">
+        SELECT
+        *
+        FROM
+        `news`
+        ORDER BY
+        news_date DESC
+        LIMIT #{count};
+    </select>
+    <!--按照时间降序查询新闻数据-->
+    <select id="selectLastNews" resultType="com.beyond233.his.entity.News">
+        SELECT
+        *
+        FROM
+        `news`
+        ORDER BY
+        news_date DESC
+        LIMIT #{start},#{count};
+    </select>
+    <!--查询新闻对应的图片url-->
+    <select id="selectNewsImgUrlById" resultType="String">
+        SELECT
+        img_url
+        FROM
+        news_image
+        WHERE
+        news_id = #{newsId};
+    </select>
+    <!--指定查询多少条点击数最高的新闻数据，点击数从高到低-->
+    <select id="selectNewsWithMaxClicks" resultType="com.beyond233.his.entity.News">
+        SELECT
+        *
+        FROM
+        news
+        ORDER BY
+        news_click DESC
+        LIMIT 0,#{count}
+    </select>
+    <!--封装一周内的新闻-->
+    <select id="selectNewsInOneWork" resultType="com.beyond233.his.entity.News">
+        SELECT
+        *
+        FROM
+        news
+        WHERE
+        news_date BETWEEN CURRENT_DATE () - 7
+        AND sysdate()
+        LIMIT 0,#{count}
+    </select>
+    <!--通过关键词来搜索新闻-->
+    <select id="selectNewsByKeyword" resultType="com.beyond233.his.entity.News">
+        SELECT
+        *
+        FROM
+        news
+        WHERE
+        news_article LIKE #{keyword}
+        OR news_title LIKE #{keyword}
+        LIMIT 0,#{count}
+    </select>
+    <!--删除多个新闻公告-->
+    <delete id="deleteNewsByIds">
+        delete
+        from news
+        where news_id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap id="BaseResultMap" type="com.beyond233.his.entity.News">
+        <id column="news_id" jdbcType="INTEGER" property="newsId"/>
+        <result column="news_date" jdbcType="DATE" property="newsDate"/>
+        <result column="news_title" jdbcType="VARCHAR" property="newsTitle"/>
+        <result column="news_author" jdbcType="VARCHAR" property="newsAuthor"/>
+        <result column="news_type" jdbcType="VARCHAR" property="newsType"/>
+        <result column="news_click" jdbcType="INTEGER" property="newsClick"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.beyond233.his.entity.News">
+        <result column="news_article" jdbcType="LONGVARCHAR" property="newsArticle"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        news_id, news_date, news_title, news_author, news_type, news_click
+    </sql>
+    <sql id="Blob_Column_List">
+        news_article
+    </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.beyond233.his.entity.NewsExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from news
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.beyond233.his.entity.NewsExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from news
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from news
+        where news_id = #{newsId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from news
+        where news_id = #{newsId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.beyond233.his.entity.NewsExample">
+        delete from news
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.beyond233.his.entity.News">
+        insert into news (news_id, news_date, news_title,
+        news_author, news_type, news_click,
+        news_article)
+        values (#{newsId,jdbcType=INTEGER}, #{newsDate,jdbcType=DATE}, #{newsTitle,jdbcType=VARCHAR},
+        #{newsAuthor,jdbcType=VARCHAR}, #{newsType,jdbcType=VARCHAR}, #{newsClick,jdbcType=INTEGER},
+        #{newsArticle,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.beyond233.his.entity.News">
+        insert into news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="newsId != null">
+                news_id,
+            </if>
+            <if test="newsDate != null">
+                news_date,
+            </if>
+            <if test="newsTitle != null">
+                news_title,
+            </if>
+            <if test="newsAuthor != null">
+                news_author,
+            </if>
+            <if test="newsType != null">
+                news_type,
+            </if>
+            <if test="newsClick != null">
+                news_click,
+            </if>
+            <if test="newsArticle != null">
+                news_article,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="newsId != null">
+                #{newsId,jdbcType=INTEGER},
+            </if>
+            <if test="newsDate != null">
+                #{newsDate,jdbcType=DATE},
+            </if>
+            <if test="newsTitle != null">
+                #{newsTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="newsAuthor != null">
+                #{newsAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="newsType != null">
+                #{newsType,jdbcType=VARCHAR},
+            </if>
+            <if test="newsClick != null">
+                #{newsClick,jdbcType=INTEGER},
+            </if>
+            <if test="newsArticle != null">
+                #{newsArticle,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.beyond233.his.entity.NewsExample" resultType="java.lang.Long">
+        select count(*) from news
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update news
+        <set>
+            <if test="record.newsId != null">
+                news_id = #{record.newsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.newsDate != null">
+                news_date = #{record.newsDate,jdbcType=DATE},
+            </if>
+            <if test="record.newsTitle != null">
+                news_title = #{record.newsTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newsAuthor != null">
+                news_author = #{record.newsAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newsType != null">
+                news_type = #{record.newsType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.newsClick != null">
+                news_click = #{record.newsClick,jdbcType=INTEGER},
+            </if>
+            <if test="record.newsArticle != null">
+                news_article = #{record.newsArticle,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update news
+        set news_id = #{record.newsId,jdbcType=INTEGER},
+        news_date = #{record.newsDate,jdbcType=DATE},
+        news_title = #{record.newsTitle,jdbcType=VARCHAR},
+        news_author = #{record.newsAuthor,jdbcType=VARCHAR},
+        news_type = #{record.newsType,jdbcType=VARCHAR},
+        news_click = #{record.newsClick,jdbcType=INTEGER},
+        news_article = #{record.newsArticle,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update news
+        set news_id = #{record.newsId,jdbcType=INTEGER},
+        news_date = #{record.newsDate,jdbcType=DATE},
+        news_title = #{record.newsTitle,jdbcType=VARCHAR},
+        news_author = #{record.newsAuthor,jdbcType=VARCHAR},
+        news_type = #{record.newsType,jdbcType=VARCHAR},
+        news_click = #{record.newsClick,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.beyond233.his.entity.News">
+        update news
+        <set>
+            <if test="newsDate != null">
+                news_date = #{newsDate,jdbcType=DATE},
+            </if>
+            <if test="newsTitle != null">
+                news_title = #{newsTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="newsAuthor != null">
+                news_author = #{newsAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="newsType != null">
+                news_type = #{newsType,jdbcType=VARCHAR},
+            </if>
+            <if test="newsClick != null">
+                news_click = #{newsClick,jdbcType=INTEGER},
+            </if>
+            <if test="newsArticle != null">
+                news_article = #{newsArticle,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where news_id = #{newsId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.beyond233.his.entity.News">
+        update news
+        set news_date = #{newsDate,jdbcType=DATE},
+        news_title = #{newsTitle,jdbcType=VARCHAR},
+        news_author = #{newsAuthor,jdbcType=VARCHAR},
+        news_type = #{newsType,jdbcType=VARCHAR},
+        news_click = #{newsClick,jdbcType=INTEGER},
+        news_article = #{newsArticle,jdbcType=LONGVARCHAR}
+        where news_id = #{newsId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.beyond233.his.entity.News">
+        update news
+        set news_date = #{newsDate,jdbcType=DATE},
+        news_title = #{newsTitle,jdbcType=VARCHAR},
+        news_author = #{newsAuthor,jdbcType=VARCHAR},
+        news_type = #{newsType,jdbcType=VARCHAR},
+        news_click = #{newsClick,jdbcType=INTEGER}
+        where news_id = #{newsId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,30 @@
+.div-shadow {
+    background: white;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 5px rgba(191, 191, 191, 0.9);
+    transform: scale(1);
+    transition: box-shadow 0.6s, transform 0.5s;
+}
+
+/*.div-shadow:hover{*/
+/*    width: 450px;*/
+/*    height: 400px;*/
+/*    background: whitesmoke;*/
+/*    margin: 100px auto;*/
+/*    border-radius: 5%;*/
+/*    !*box-shadow: 0px 0px 50px 15px rgba(0,0,0,0.9);*!*/
+/*    box-shadow: 0px 0px 50px 5px rgba(191, 191, 191, 0.9);*/
+/*    transition: box-shadow 0.5s;*/
+/*}*/
+
+.div-shadow:hover {
+    background: white;
+    /*margin: 100px auto;*/
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 5px rgba(191, 191, 191, 0.9);
+    transform: scale(1);
+    transition: box-shadow 0.6s, transform 0.5s;
+
+}
+

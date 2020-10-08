@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{index.title}">铜山人民医院-首页</title>
+</head>
+<head th:insert="commonPage::header">
+</head>
+<body style="position: relative">
+<!--头部导航栏-->
+<div th:fragment="comHeadBar" id="comHeadBar" class="layui-icon">
+    <ul class="layui-nav layui-bg-green">
+        <img src="/images/hospital.jpg" class="layui-nav-img" style="width: 3%;height: 3%;float: left" alt="人民的好医院">
+
+        <li class="layui-nav-item" style="float: left">
+            <a href="/index.html" th:text="#{index.hospital}">铜山人民医院</a>
+        </li>
+        <li class="layui-nav-item" style="margin-left: 60px">
+            <form action="/search" method="post">
+                <input style="width:130px;height: 29px" type="text" name="keyWord" th:placeholder="#{index.search}"
+                       placeholder="搜索科室或医生">
+                <button style="padding-bottom: 25px" type="submit"
+                        class="layui-btn-sm layui-btn layui-btn-normal layui-icon-search"></button>
+            </form>
+        </li>
+        <li class="layui-nav-item" style="float: right">
+            <a href="#" th:text="#{index.employee}">员工入口</a>
+            <dl class="layui-nav-child">
+                <!--            <dd><a th:href="@{/emp/emplogin.html}">医生入口</a></dd>-->
+                <dd><a th:href="@{/emp/emplogin.html}">后台管理</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float: right">
+            <a href="#" th:text="#{index.language}">语言</a>
+            <dl class="layui-nav-child">
+                <dd><a th:href="@{/index.html(l='zh_CN')}">中文</a></dd>
+                <dd><a th:href="@{/index.html(l='en_US')}">English</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float: right" th:if="${session.login==null}">
+            <!-- class="layui-badge-dot"控制是否显示小红点-->
+            <a href="/signup.html" th:text="#{index.signup}">立即注册<span
+                    class="layui-badge-dot layui-bg-orange"></span></a>
+        </li>
+        <li class="layui-nav-item" style="float: right" th:if="${session.login==null}">
+            <!-- class="layui-badge-dot"控制是否显示小红点-->
+            <a href="/user/login/page" id="login" th:text="#{index.login}"><span
+                    class="layui-badge-dot layui-bg-orange">患者你好,请先登录</span></a>
+        </li>
+        <li class="layui-nav-item" style="float: right" th:if="${session.login!=null}">
+            <a th:href="@{/user/space}"><span class="layui-icon-username layui-nav-title"
+                                              th:text="${session.login.userName}"></span></a>
+            <dl class="layui-nav-child">
+                <dd><a th:href="@{/user/space}" th:text="#{index.myConter}" th:id="userSpace">个人中心</a></dd>
+                <dd><a th:href="@{/user/exit}" id="exit" th:text="#{index.exit}">退出登录</a></dd>
+            </dl>
+        </li>
+    </ul>
+
+    <!--信息导航栏-->
+    <div style="margin: auto;width: 60%;background: white">
+        <ul class="layui-nav layui-bg-white">
+            <li class="layui-nav-item">
+                <a style="color: black" href="/index.html" id="bar-a-index" th:text="#{index.indexPage}">网站首页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a style="color: black" th:href="@{/register/page}" id="bar-a-register" th:text="#{index.registerPage}">预约挂号</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/employee/doctor/page" style="color: black" id="bar-a-docter" th:text="#{index.doctorPage}">寻找医生</a>
+                <!--            <dl class="layui-nav-child">-->
+                <!--                <dd><a th:text="#{index.expert}">专家门诊</a></dd>-->
+                <!--                <dd><a th:text="#{index.doctorList}">医生列表</a></dd>-->
+                <!--            </dl>-->
+            </li>
+            <li class="layui-nav-item">
+                <a th:href="@{/department/page}" style="color: black" id="bar-a-department"
+                   th:text="#{index.departmentPage}">寻找科室</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/qa/page" style="color: black" id="bar-a-question" th:text="#{index.questionPage}">常见问题</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/news/page/home" style="color: black" id="bar-a-newsHome" th:text="#{index.newsPage}">新闻中心</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/map.html" style="color: black" id="bar-a-map" th:text="#{index.trafficPage}">交通导航</a>
+            </li>
+            <li class="layui-nav-item">
+                <a style="color: black" id="bar-a-hospital" th:text="#{index.infoPage}">医院概况</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/intro.html" th:text="#{index.introduce}">医院介绍</a></dd>
+                    <dd><a href="/history.html" th:text="#{index.history}">医院历史</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <!--<hr>-->
+    </div>
+
+</div>
+<!--轮播图-->
+<div class="layui-carousel" id="test1" style="margin-bottom: 120px;">
+    <div carousel-item>
+        <div><img src="/images/105.jpg" alt="3"></div>
+        <div><img src="/images/102.jpg" alt="3"></div>
+        <div><img src="/images/104.jpg" alt="2"></div>
+        <div><img src="/images/101.jpg" alt="2"></div>
+        <div><img src="/images/100.jpg" alt="1"></div>
+    </div>
+</div>
+<!--医院新闻，公告信息-->
+<div style="margin-bottom: 800px">
+    <div style="margin: auto;width: 1220px">
+        <h2 th:text="#{index.lastNews}">新闻动态</h2>
+        <hr>
+        <div style="width: 1180px">
+            <a style="float: right" href="/news/page/home" class="layui-btn layui-btn-radius layui-btn-primary"
+               th:text="#{index.seeMore}">查看更多</a>
+        </div>
+        <div>
+            <div style="float: left;width: 700px;height: 600px;">
+                <div class="div-shadow" style="width: 680px;height: 520px">
+                    <div style="height: 440px;">
+                        <div class="layui-carousel" id="test2">
+                            <!--新闻轮播图-->
+                            <div carousel-item>
+                                <div th:each="vo,item:${newsVOList}">
+                                    <div>
+                                        <a target="_blank" th:href="@{'/news/page/'+${vo.news.newsId}}">
+                                            <img th:src="@{'/images/'+${vo.imgUrl.get(0)}}"
+                                                 th:alt="${vo.news.newsTitle}">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 80px;margin: auto;width: 150px">
+                        <h3 th:text="#{index.bigNews}" style="margin-top: 20px">重大新闻</h3>
+                    </div>
+                </div>
+            </div>
+            <div style="float: left;width: 500px;height: 600px">
+                <div class="div-shadow" style="width: 480px;height: 250px">
+                    <div style="margin: auto;width: 420px;padding-top: 15px;padding-bottom: 15px">
+                        <h4 th:text="#{index.fight}"><b>众志成城 抗击疫情</b></h4>
+                        <hr class="layui-bg-red" style="width: 30%;height: 5px;margin-bottom: 5px">
+                        <div th:each="illNews,item:${illNewsList}">
+                            <a th:href="@{'/news/page/'+${illNews.newsId}}" th:text="${illNews.newsTitle}">这里是新闻标题</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="div-shadow" style="width: 480px;height: 250px">
+                    <div style="margin: auto;width: 420px;padding-top: 15px;padding-bottom: 15px">
+                        <h4 th:text="#{index.hotNews}"><b>医院热点新闻</b></h4>
+                        <hr class="layui-bg-green" style="width: 30%;height: 5px;margin-bottom: 5px">
+                        <div th:each="hotNews:${hotNewsList}">
+                            <a th:href="@{'/news/page/'+${hotNews.newsId}}" th:text="${hotNews.newsTitle}">这里是新闻内容</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--底部基础信息-->
+<div th:fragment="comFooter" id="comFooter">
+    <div class="layui-footer" style="background-color: #F0F0F0;height: 220px">
+        <div style="margin: auto;width: 1350px;height: 220px;">
+            <!--友情链接-->
+            <div style="width: 870px;float: left;color: #727272;font-size: small;margin-top: 20px;">
+                <div>友情链接:</div>
+                <div style="margin-top: 5px;margin-left: 70px"><a target="_blank" href="http://www.nhc.gov.cn/"
+                                                                  style="color: #727272;">中华人民共和国国家卫生健康委员会</a></div>
+                <div style="margin-top: 5px;margin-left: 70px"><a target="_blank" href="http://wjw.nanjing.gov.cn/"
+                                                                  style="color: #727272;">南京市卫生健康委员会</a></div>
+                <div style="margin-top: 5px;margin-left: 70px"><a target="_blank"
+                                                                  href="http://wjw.jiangsu.gov.cn/index.html"
+                                                                  style="color: #727272;">江苏省卫生健康委员会</a></div>
+            </div>
+            <!--微信-->
+            <div style="width: 470px;float: left;color: #727272;font-size: small;margin-top: 20px;" class="layui-icon">
+                <img th:src="@{/images/wechat.jpg}" style="width: 100px;height: 100px" alt="官方微信公众号">
+                <span class="layui-icon-login-wechat" style="font-size: medium">官方微信公众号</span>
+                <img th:src="@{/images/wechat.jpg}" style="width: 100px;height: 100px" alt="官方微信公众号">
+                <span class="layui-icon-login-weibo" style="font-size: medium">官方微博</span>
+            </div>
+            <!--左侧-->
+            <div style="width: 870px;height: 70px;float: left;margin-top: 12px;
+color: #727272;font-size: small">
+                <div style="margin-bottom: 8px">院长信箱&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;隐私安全&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;版权声明&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;帮助信息</div>
+                <div style="margin-bottom: 8px">地 址： 医院地址（江宁院区）：江苏省南京市江宁区航金大道88号</div>
+                <div>邮编：210000</div>
+            </div>
+            <!--右侧-->
+            <div style="width: 470px;height: 70px;float: left;color: #727272;margin-top: 12px;font-size: small">
+                <div style="margin-bottom: 8px;">ICP备案信息：苏ICP备10001234 苏ICP备05040321 COPYRIGHT © 2019-2020</div>
+                <div style="margin-bottom: 8px;margin-left: 335px">医院总机：88877666</div>
+                <div style=";margin-left: 330px">网站建设：<a target="_blank" href="https://github.com/beyond233/"><span
+                        style="color:grey">beyond233</span></a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-index").attr("style", "color:green");
+    /*轮播图*/
+    layui.use('carousel', function () {
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            , width: '100%' //设置容器宽度
+            , height: '600px'
+            , arrow: 'hover' //始终显示箭头
+            // ,anim: 'updown' //切换动画方式
+        });
+        carousel.render({
+            elem: '#test2'
+            , width: '680px' //设置容器宽度
+            , height: '440px'
+            , arrow: 'hover' //始终显示箭头
+            // ,anim: 'updown' //切换动画方式
+        });
+    });
+    /*固定块*/
+    layui.use('util', function () {
+        var util = layui.util;
+        //执行
+        util.fixbar({
+            bar1: '&#xe66f;'
+            , bar2: true
+            , bgcolor: "#1F9A6C"
+            , click: function (type) {
+                console.log(type);
+                if (type === 'bar1') {
+                    alert('点击了bar1');
+                } else if (type === 'bar2') {
+                    $("#bar-a-question").append("<span></span>");
+                    $("#bar-a-question span").click();
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

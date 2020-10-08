@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+    <style>
+        input {
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            color: #000;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1em;
+            height: 45px;
+            padding: 0 16px;
+            transition: background 0.3s ease-in-out;
+            width: 30%;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #9ecaed;
+            box-shadow: 0 0 10px #9ecaed;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--    头部-->
+    <div class="layui-header">
+        <!--引入头部导航栏-->
+        <div th:insert="index::comHeadBar"></div>
+    </div>
+
+    <!--    身体-->
+    <div class="layui-side layui-icon" style="margin-top: 100px;margin-left: 100px">
+
+        <blockquote class="layui-elem-quote" style="text-align: center;">
+            <span class="layui-icon-username" style="font-size: large">&nbsp;个人信息</span>
+        </blockquote>
+        <div style="text-align: center;font-size:medium;">
+            <p style="margin-top: 5px;margin-bottom: 5px"><a href="#" style="color: #00aa88" id="a_1">基础信息</a></p>
+            <p style="margin-top: 5px;margin-bottom: 5px"><a href="#" id="a_2">账号管理</a></p>
+        </div>
+
+        <blockquote class="layui-elem-quote" style="text-align: center;">
+            <span class="layui-icon-log" style="font-size: large;">&nbsp;就诊信息</span>
+        </blockquote>
+        <div style="text-align: center;">
+            <p style="margin-top: 5px;margin-bottom: 5px"><a href="#" id="a_3">预约记录</a></p>
+            <p style="margin-top: 5px;margin-bottom: 5px"><a href="#" id="a_4">就诊记录</a></p>
+        </div>
+
+
+    </div>
+    <!--    内容区域-->
+    <div class="layui-body" style="margin-left: 100px">
+        <!-- 内容主体区域 -->
+        <div style="padding: 55px;margin-top: 20px">
+
+            <!-- 基础信息-->
+            <div style="display: block;margin-top: 100px" id="div1">
+                <table lay-data="{height: 103}" lay-filter="demoEvent" class="layui-table" lay-size="lg">
+                    <thead>
+                    <tr>
+                        <td lay-data="{field:'userName',event:'userName'}">姓名</td>
+                        <td lay-data="{field:'userSex',event:'userSex'}">性别</td>
+                        <td lay-data="{field:'userBirth', event: 'userBirth', style:'cursor: pointer;'}">生日</td>
+                        <td lay-data="{field:'userHistory',event:'userHistory' }">既往病史</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="tr1">
+                        <!--用户名-->
+                        <td th:text="${session.login.userName!=null?session.login.userName:''}" id="userName"></td>
+                        <!--性别-->
+                        <td th:text="${session.login.userSex!=null?session.login.userSex:''}" id="userSex"></td>
+                        <!--生日-->
+                        <td th:text="${session.login.userBirth!=null?#dates.format(session.login.userBirth, 'yyyy-MM-dd'):''}"
+                            id="userBirth"></td>
+                        <!--既往病史-->
+                        <td th:text="${session.login.userHistory!=null?session.login.userHistory:''}"
+                            id="userHistory"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 账号管理-->
+            <div style="display: none" class="layui-icon" id="div2">
+                <!--手机号修改-->
+                <fieldset class="layui-elem-field">
+                    <legend><span class="layui-icon-cellphone" style="font-weight: bold">手机号管理</span></legend>
+                    <div class="layui-field-box layui-icon">
+                        <form id="phoneForm">
+                            <input type="tel" id="userPhone" placeholder="请输入新的手机号">
+                            <button type="button" id="phoneBtn" style="margin-bottom: 5px;margin-left: 40px"
+                                    class="layui-btn  layui-btn-lg layui-btn-danger ">更改手机号
+                            </button>
+                        </form>
+                    </div>
+                </fieldset>
+                <!--密码修改-->
+                <fieldset class="layui-elem-field">
+                    <legend><span class="layui-icon-password" style="font-weight: bold">密码管理</span></legend>
+                    <div class="layui-field-box">
+                        <form class="layui-form" id="updatePasswordForm">
+                            <input type="password" id="password1" placeholder="请先输入原密码" style="margin-bottom: 5px"><br>
+                            <input type="password" id="password2" placeholder="请输入新密码" style="margin-bottom: 5px"
+                                   disabled>
+                            <button class="layui-btn layui-btn-normal layui-btn-lg" id="updatePasswordBtn"
+                                    style="margin-bottom: 5px;margin-left: 40px">更改密码
+                            </button>
+                            <br>
+                            <input type="password" id="password3" placeholder="请再次输入新密码" disabled><br>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!--预约记录-->
+            <div style="display: none;text-align: center" id="div3">
+                <table class="layui-table" lay-skin="row" lay-size="lg" id="table3" style="text-align: center">
+                    <thead>
+                    <tr>
+                        <td>预约时间</td>
+                        <td>预约门诊</td>
+                        <td>预约医生</td>
+                        <td>单号价格</td>
+                        <td>预约状态</td>
+                        <td>取消预约</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="tr3">
+                        <td colspan="6">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--就诊记录-->
+            <div style="display: none;text-align: center" id="div4">
+                <table class="layui-table" lay-skin="row" lay-size="lg" id="table4" style="text-align: center">
+                    <thead>
+                    <tr>
+                        <td>就诊时间</td>
+                        <td>就诊科室</td>
+                        <td>看诊医生</td>
+                        <td>所患症状</td>
+                        <td>诊断结果</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td colspan="5">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--&lt;!&ndash;    底部区域&ndash;&gt;-->
+<!--    <div style="width: 100%">-->
+<!--        <div th:insert="index::comFooter"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    layui.use('carousel', function () {
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            , width: '100%' //设置容器宽度
+            , height: '600px'
+            , arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+    /**侧边导航栏切换**/
+    let a1 = $("#a_1");
+    let a2 = $("#a_2");
+    let a3 = $("#a_3");
+    let a4 = $("#a_4");
+    let div1 = $("#div1");
+    let div2 = $("#div2");
+    let div3 = $("#div3");
+    let div4 = $("#div4");
+    /*基础信息*/
+    a1.click(function () {
+        //修改颜色
+        a1.attr("style", "color: #00aa88");
+        a2.attr("style", "color: black");
+        a3.attr("style", "color: black");
+        a4.attr("style", "color: black");
+        //模块状态切换
+        div1.attr("style", "display: block");
+        div2.attr("style", "display: none");
+        div3.attr("style", "display: none");
+        div4.attr("style", "display: none");
+    });
+    /*账号管理*/
+    a2.click(function () {
+        //修改颜色
+        a2.attr("style", "color: #00aa88");
+        a1.attr("style", "color: black");
+        a3.attr("style", "color: black");
+        a4.attr("style", "color: black");
+        //模块状态切换
+        // display: block
+        div1.attr("style", "display: none");
+        div2.attr("style", "display: block");
+        div3.attr("style", "display: none");
+        div4.attr("style", "display: none");
+    });
+    /*预约记录*/
+    a3.click(function () {
+        //修改颜色
+        a3.attr("style", "color: #00aa88");
+        a1.attr("style", "color: black");
+        a2.attr("style", "color: black");
+        a4.attr("style", "color: black");
+        //模块状态切换
+        // display: block
+        div1.attr("style", "display: none");
+        div3.attr("style", "display: block");
+        div2.attr("style", "display: none");
+        div4.attr("style", "display: none");
+        //查询数据
+        $.get("/user/registerRecordQuery", function (data) {
+            if (data.length > 0) {
+                let table3 = $("#table3");
+                let tbody = $("<tbody></tbody>");
+                table3.attr("class", "layui-table");
+                table3.attr("lay-skin", "row");
+                table3.attr("lay-size", "lg");
+                table3.empty();
+                table3.append(" <thead>" +
+                    "                    <tr>\n" +
+                    "                        <td>预约时间</td>\n" +
+                    "                        <td>预约门诊</td>\n" +
+                    "                        <td>预约医生</td>\n" +
+                    "                        <td>单号价格</td>\n" +
+                    "                        <td>预约状态</td>\n" +
+                    "                        <td>取消预约</td>\n" +
+                    "                    </tr>\n" +
+                    "                    </thead>");
+                table3.append(tbody);
+                for (let i = 0; i < data.length; i++) {
+                    let tr = $("<tr></tr>");
+                    tr.append("<td>" + data[i].registerDate + "</td>");
+                    tr.append("<td>" + data[i].departmentName + "</td>");
+                    tr.append("<td>" + data[i].empName + "</td>");
+                    tr.append("<td>" + data[i].registerPrice + "元" + "</td>");
+                    if (data[i].status === 1) {
+                        tr.append("<td style='color: #00aa88'>进行中</td>");
+                        const registerId = data[i].registerId;
+                        const a = "<td><button class='layui-btn layui-btn-normal layui-btn-sm' onclick='cancelRegister(" + registerId + ")' >取消预约</button></td>";
+                        tr.append(a);
+                    } else {
+                        tr.append("<td style='color: red'>已过期</td>");
+                        tr.append("<td style='color: red'>已过期</td>");
+                    }
+                    tr.appendTo(tbody);
+                }
+            }
+        });
+    });
+
+    /**取消预约**/
+    function cancelRegister(registerId) {
+        layui.use('layer', function () {
+            const layer = layui.layer;
+            layer.confirm('确认取消预约吗？', {
+                // skin: 'layui-layer-molv', //样式类名
+                btn: ['立即取消', '再等等'] //按钮
+            }, function () {
+                const url = "/register/" + registerId;
+                $.post(url, {_method: "DELETE"}, function (result) {
+                    a3.click();
+                });
+                layer.msg("取消成功!");
+            }, function () {
+            });
+        });
+    }
+
+    /*就诊记录*/
+    a4.click(function () {
+        //修改颜色
+        a4.attr("style", "color: #00aa88");
+        a1.attr("style", "color: black");
+        a3.attr("style", "color: black");
+        a2.attr("style", "color: black");
+        //模块状态切换
+        // display: block
+        div1.attr("style", "display: none");
+        div4.attr("style", "display: block");
+        div3.attr("style", "display: none");
+        div2.attr("style", "display: none");
+        $.get("/user/orderRecordQuery", function (data) {
+            if (data.length > 0) {
+                let table4 = $("#table4");
+                let tbody = $("<tbody></tbody>");
+                table4.attr("class", "layui-table");
+                table4.attr("lay-skin", "row");
+                table4.attr("lay-size", "lg");
+                table4.empty();
+                table4.append(" <thead>\n" +
+                    "                    <tr>\n" +
+                    "                        <td>就诊时间</td>\n" +
+                    "                        <td>就诊科室</td>\n" +
+                    "                        <td>看诊医生</td>\n" +
+                    "                        <td>所患症状</td>\n" +
+                    "                        <td>诊断结果</td>\n" +
+                    "                    </tr>\n" +
+                    "                    </thead>");
+                table4.append(tbody);
+                for (let i = 0; i < data.length; i++) {
+                    let tr = $("<tr></tr>");
+                    tr.append("<td>" + data[i].orderDate + "</td>");
+                    tr.append("<td>" + data[i].departmentName + "</td>");
+                    tr.append("<td>" + data[i].empName + "</td>");
+                    tr.append("<td>" + data[i].orderSymptom + "</td>");
+                    tr.append("<td>" + data[i].orderResult + "</td>");
+                    tr.appendTo(tbody);
+                }
+            }
+        });
+    });
+
+    /**修改手机号**/
+    $("#phoneBtn").click(function () {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            //判断是否输入有效手机号
+            let newPhone = $("#userPhone").val();
+            if (newPhone != null && newPhone !== '') {
+                layer.prompt({title: '请输入密码', formType: 1}, function (pass, index) {
+                    let user = {"userPhone": newPhone, "userPassword": pass};
+                    let data = JSON.stringify(user);
+                    $.ajax({
+                        url: "/user/update/phone",
+                        contentType: "application/json; charset=utf-8",
+                        method: "post",
+                        data: data,
+                        success: function (result) {
+                            if (result === "true") {
+                                //修改手机号成功，跳转登录界面
+                                layer.alert('修改成功，请重新登录', {
+                                    skin: 'layui-layer-molv' //样式类名
+                                    , closeBtn: 0
+                                }, function () {
+                                    $("#exit").append("<span></span>");
+                                    $("#exit span").click();
+                                });
+                            } else if (result === "disabled") {
+                                layer.msg("<div class='layui-icon'><span class='layui-icon-face-cry' style='color: red;font-size: larger'>&nbsp;&nbsp;该手机已绑定其他账户在·!</span></div>");
+                            } else layer.msg("<div class='layui-icon'><span class='layui-icon-face-cry' style='color: red;font-size: larger'>&nbsp;&nbsp;密码错误!</span></div>");
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else {
+                layer.msg("请先输入有效手机号！");
+            }
+        });
+        return false;
+    });
+    var passwordFlag1 = false;
+    var passwordFlag2 = false;
+    var passwordFlag3 = false;
+    /**修改密码**/
+    $("#password1").blur(function () {
+        let oldPassword = $("#password1").val();
+        //验证旧密码是否正确，若正确则开启新密码的输入
+        if (oldPassword != null && oldPassword !== "") {
+            $.post("/user/passwordJudge", {password: oldPassword}, function (result) {
+                if (result === "true") {
+                    passwordFlag1 = true;
+                    $("#password2").removeAttr('disabled');
+                    $("#password3").removeAttr('disabled');
+                } else {
+                    passwordFlag1 = false;
+                    $("#password2").attr('disabled', 'disabled');
+                    $("#password3").attr('disabled', 'disabled');
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        layer.alert('密码错误，请重新输入', {
+                            skin: 'layui-layer-molv' //样式类名
+                            , closeBtn: 0
+                        });
+                    });
+                }
+            });
+        }
+    });
+    //验证两次密码是否一致
+    $("#password3").blur(function () {
+        let newPassword1 = $("#password2").val();
+        let newPassword2 = $("#password3").val();
+        if (newPassword1 != null && newPassword1 !== "") {
+            passwordFlag2 = true;
+            if (newPassword2 != null && newPassword2 !== "" && newPassword1 === newPassword2)
+                passwordFlag3 = true;
+            else {
+                passwordFlag2 = false;
+                passwordFlag3 = false;
+                layui.use('layer', function () {
+                    const layer = layui.layer;
+                    layer.alert('前后两次密码不同', {
+                        skin: 'layui-layer-molv' //样式类名
+                        , closeBtn: 0
+                    });
+                });
+            }
+        } else {
+            passwordFlag2 = false;
+            passwordFlag3 = false;
+            layui.use('layer', function () {
+                const layer = layui.layer;
+                layer.alert('你还没输入新密码', {
+                    skin: 'layui-layer-molv' //样式类名
+                    , closeBtn: 0
+                });
+            });
+        }
+    });
+    //点击按钮修改密码
+    $("#updatePasswordBtn").click(function () {
+        if (passwordFlag1 && passwordFlag2 && passwordFlag3) {
+            let password = $("#password3").val();
+            $.post("/user/update/password", {newPassword: password}, function (result) {
+                if (result === "true") {
+                    layui.use('layer', function () {
+                        let layer = layui.layer;
+                        //修改密码成功，跳转登录界面
+                        layer.alert('修改成功，请重新登录', {
+                            skin: 'layui-layer-molv' //样式类名
+                            , closeBtn: 0
+                        }, function () {
+                            $("#exit").append("<span></span>");
+                            $("#exit span").click();
+                        });
+                    });
+                } else layer.msg("密码修改失败");
+            });
+        } else {
+            layui.use('layer', function () {
+                let layer = layui.layer;
+                layer.alert('密码输入不正确');
+            });
+        }
+        return false;
+    });
+    //单元格事件监听
+    layui.use('table', function () {
+        var table = layui.table;
+        //监听单元格事件
+        table.on('tool(demoEvent)', function (obj) {
+            var data = obj.data;
+            let event = obj.event;
+            //获取字段名 （字段名与事件名相同）
+            let key = event;
+            //动态改变弹框提示消息msg
+            let msg;
+            switch (key) {
+                case "userName":
+                    msg = "您正在修改【姓名】";
+                    break;
+                case "userSex":
+                    msg = "您正在修改【性别】";
+                    break;
+                case "userBirth":
+                    msg = "您正在修改【生日】";
+                    break;
+                case "userHistory":
+                    msg = "您正在修改【既往病史】";
+                    break;
+            }
+            if (event !== null) {
+                layer.prompt({
+                    formType: 5
+                    , title: msg
+                    , value: document.getElementById(key).innerText
+                }, function (value, index) {
+                    layer.close(index);
+                    //创建json对象并动态修改键名
+                    let j = {"tempKey": value};
+                    let s = JSON.stringify(j);
+                    s = s.replace(/tempKey/, key);
+                    j = JSON.parse(s);
+                    //这里发送修改的Ajax请求
+                    $.ajax({
+                        url: "/user/update",
+                        data: j,
+                        method: "post",
+                        // contentType:"application/json; charset=utf-8"
+                    });
+                    //同步更新表格和缓存对应的值
+                    switch (key) {
+                        case "userName":
+                            obj.update({userName: value});
+                            break;
+                        case "userSex":
+                            obj.update({userSex: value});
+                            break;
+                        case "userBirth":
+                            obj.update({userBirth: value});
+                            break;
+                        case "userHistory":
+                            obj.update({userHistory: value});
+                            break;
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

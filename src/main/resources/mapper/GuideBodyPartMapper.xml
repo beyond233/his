@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond233.his.mapper.GuideBodyPartMapper">
+    <resultMap id="BaseResultMap" type="com.beyond233.his.entity.GuideBodyPart">
+        <id column="bodypart_id" jdbcType="INTEGER" property="bodypartId"/>
+        <result column="bodypart_name" jdbcType="VARCHAR" property="bodypartName"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        bodypart_id, bodypart_name
+    </sql>
+    <select id="selectByExample" parameterType="com.beyond233.his.entity.GuideBodyPartExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from guide_bodypart
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from guide_bodypart
+        where bodypart_id = #{bodypartId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from guide_bodypart
+        where bodypart_id = #{bodypartId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.beyond233.his.entity.GuideBodyPartExample">
+        delete from guide_bodypart
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.beyond233.his.entity.GuideBodyPart">
+        insert into guide_bodypart (bodypart_id, bodypart_name)
+        values (#{bodypartId,jdbcType=INTEGER}, #{bodypartName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.beyond233.his.entity.GuideBodyPart">
+        insert into guide_bodypart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bodypartId != null">
+                bodypart_id,
+            </if>
+            <if test="bodypartName != null">
+                bodypart_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bodypartId != null">
+                #{bodypartId,jdbcType=INTEGER},
+            </if>
+            <if test="bodypartName != null">
+                #{bodypartName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.beyond233.his.entity.GuideBodyPartExample"
+            resultType="java.lang.Long">
+        select count(*) from guide_bodypart
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update guide_bodypart
+        <set>
+            <if test="record.bodypartId != null">
+                bodypart_id = #{record.bodypartId,jdbcType=INTEGER},
+            </if>
+            <if test="record.bodypartName != null">
+                bodypart_name = #{record.bodypartName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update guide_bodypart
+        set bodypart_id = #{record.bodypartId,jdbcType=INTEGER},
+        bodypart_name = #{record.bodypartName,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.beyond233.his.entity.GuideBodyPart">
+        update guide_bodypart
+        <set>
+            <if test="bodypartName != null">
+                bodypart_name = #{bodypartName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where bodypart_id = #{bodypartId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.beyond233.his.entity.GuideBodyPart">
+        update guide_bodypart
+        set bodypart_name = #{bodypartName,jdbcType=VARCHAR}
+        where bodypart_id = #{bodypartId,jdbcType=INTEGER}
+    </update>
+</mapper>

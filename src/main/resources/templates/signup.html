@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>铜山人民医院-注册</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="bookmark" th:href="@{/favicon.ico}"/>
+    <link type="text/css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+
+<!--头部导航-->
+<div>
+    <div th:insert="index::comHeadBar"></div>
+</div>
+
+<!--中央-->
+<div style="margin: auto;width: 90%;height: 600px" class="bg1">
+    <!--注册模块-->
+    <div style="float:right;width: 350px;height: 600px;background-color: whitesmoke">
+        <div style="width: 300px;padding-top: 90px;margin: auto" class="layui-icon">
+            <form class="form-signin" action="/user/signup" autocomplete="off" method="post" id="signUpForm">
+                <h1 class="h3 mb-3 font-weight-normal" th:text="#{signup.tip}">欢迎注册</h1>
+                <!--    注册验证结果-->
+                <div class="alert alert-danger" id="signUpVerify" role="alert"
+                     th:if="${not #strings.isEmpty(#request.getAttribute('signUpVerify'))}">
+                    <span class="layui-icon-face-smile-b" style="font-size: larger"></span>
+                    <span th:text="${#request.getAttribute('signUpVerify')}"></span>
+                </div>
+                <div class="alert alert-danger" id="signUpVerifyDiv" role="alert" style="display: none">
+
+                </div>
+                <!--    注册账号和密码-->
+                <label for="inputId" class="sr-only" th:text="#{login.id}">手机号</label>
+                <input type="text" id="inputId" name="userPhone" class="form-control" style="margin-top: 40px"
+                       th:placeholder="#{login.id}" placeholder="请输入手机号 " required autofocus>
+                <label for="inputPassword" class="sr-only" th:text="#{login.password}">密码</label>
+                <input type="password" id="inputPassword" name="password" style="margin-top: 10px;margin-bottom: 15px"
+                       class="form-control" th:placeholder="#{login.password}" placeholder="请输入密码" required>
+                <label for="inputPassword" class="sr-only" th:text="#{signup.password}">再次输入密码</label>
+                <input type="password" id="inputPasswordConfirm" name="userPassword"
+                       style="margin-top: 10px;margin-bottom: 15px" class="form-control"
+                       th:placeholder="#{signup.password}" placeholder="请输入密码" required>
+                <div class="checkbox mb-3">
+                    <!--    忘记密码-->
+                    <a th:href="@{/reset.html}" class="btn-link" th:text="#{login.forget}" style="margin-left:1px"></a>
+                    <!--    已有账号？登录-->
+                    <a th:href="@{/user/login/page}" class="btn-link" th:text="#{signup.login}"
+                       style="margin-left:75px"></a>
+                </div>
+                <button class="btn btn-lg btn-success btn-block" id="subBtn" type="button" th:text="#{signup.signup}">
+                    立即注册
+                </button>
+            </form>
+            <div style="font-size: small;margin-top: 20px;margin-left: 12px">
+                <input type="checkbox" checked>
+                <span th:text="#{signup.policy}">我已阅读并同意相关服务条款和隐私政策</span></div>
+            <p style="margin-left: 90px;margin-top: 50px" class="mt-5 mb-3 text-muted">
+                &copy; 2019-2020</p>
+        </div>
+    </div>
+</div>
+
+
+<!--底部-->
+<div style="margin-top: 80px">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+
+<script type="text/javascript" src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+    });
+    layui.use('form', function () {
+            var form = layui.form;
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+    });
+    var IdFlag = false;
+    var PasswordFlag = false;
+    /**验证手机号是否已经注册**/
+    $("#inputId").blur(function () {
+        let phone = $("#inputId").val();
+        if (phone != null && phone !== "") {
+            $.post("/user/phoneVerify", {userPhone: phone}, function (result) {
+                let signUpVerifyDiv = $("#signUpVerifyDiv");
+                if (result === "true") {
+                    signUpVerifyDiv.empty();
+                    signUpVerifyDiv.append("<span class=\"layui-icon-face-smile-b\" style=\"font-size: larger\"></span><span>  请输入6~20位密码</span>");
+                    signUpVerifyDiv.attr("class", "alert alert-success");
+                    signUpVerifyDiv.show();//显示隐藏div
+                    IdFlag = true;
+                } else {
+                    signUpVerifyDiv.empty();
+                    signUpVerifyDiv.append("<span class=\"layui-icon-face-cry\" style=\"font-size: larger\"></span><span>  账号已被注册！请重新输入</span>");
+                    signUpVerifyDiv.attr("class", "alert alert-danger");
+                    signUpVerifyDiv.show();//显示隐藏div
+                    IdFlag = false;
+                }
+            });
+        }
+    });
+    /**验证两次密码是否一致**/
+    $("#inputPasswordConfirm").blur(function () {
+        let password = $("#inputPassword").val();
+        let passwordConfirm = $("#inputPasswordConfirm").val();
+        let signUpVerifyDiv = $("#signUpVerifyDiv");
+        if (password !== passwordConfirm && password != null && passwordConfirm != null) {
+            signUpVerifyDiv.empty();
+            signUpVerifyDiv.attr("class", "alert alert-danger");
+            signUpVerifyDiv.append("<span class=\"layui-icon-face-cry\" style=\"font-size: larger\"></span><span> 两次输入的密码不一致！</span>");
+            PasswordFlag = false;
+        } else {
+            signUpVerifyDiv.empty();
+            signUpVerifyDiv.attr("class", "alert alert-success");
+            signUpVerifyDiv.append("<span class=\"layui-icon-face-smile-b\" style=\"font-size: larger\"></span><span> 请点击注册按钮，完成注册！</span>");
+            PasswordFlag = true;
+        }
+    });
+    /**提交表单时也要验证id和密码是否合法**/
+    $("#subBtn").click(function () {
+        if (IdFlag && PasswordFlag)
+            $("#signUpForm").submit();
+        // else if (!IdFlag)
+        //     alert("账号不合法！");
+        // else alert("密码不合法！");
+    });
+</script>
+</body>
+</html>

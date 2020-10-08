@@ -1,0 +1,32 @@
+.greenBar {
+    color: #1f9a6c
+}
+
+a:hover {
+    color: #1f9a6c;
+    text-decoration: none
+}
+
+hr:hover {
+    color: #1f9a6c;
+}
+
+.layui-bg-white {
+    background-color: white !important
+}
+
+.bg {
+    background: url("/images/login-bg.jpg") no-repeat center;
+}
+
+.bg1 {
+    background: url("/images/hero.jpg") no-repeat center;
+}
+
+.bg2 {
+    background: url("/images/resetbg.png") no-repeat center;
+}
+
+.news-bg {
+    background: url("/images/board.jpg") no-repeat center;
+}

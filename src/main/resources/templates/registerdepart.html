@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>门诊挂号</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+
+</head>
+<body>
+<div th:insert="index::comHeadBar"></div>
+<div style="margin: auto;width: 1220px">
+    <!--导航-当前位置-->
+    <div style="font-size: small">
+        <a th:href="@{/index.html}">首页&nbsp;&nbsp;></a>
+        <a th:href="@{/register/page}">预约挂号&nbsp;&nbsp;></a>
+        <a th:href="@{'/register/info/'+${department.departmentId}}" th:text="${department.departmentName}"
+           class="greenBar">科室名称</a>
+    </div>
+    <!--预约挂号-->
+    <div style="margin-top: 15px;height: 620px">
+        <blockquote class="layui-elem-quote" th:text="${department.departmentName+'-出诊信息'}">科室排班信息</blockquote>
+        <table class="layui-table" style="margin-top: 20px">
+            <thead>
+            <tr style="text-align: center">
+                <td>出诊时间</td>
+                <td>出诊医生</td>
+                <td>总号数</td>
+                <td>剩余号源</td>
+                <td>挂号费用</td>
+                <td>预约挂号</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reg:${registerList}" style="text-align: center">
+                <td th:text="${reg.registerDate}"></td>
+                <td>
+                    <a th:href="@{'/employee/doctorIntro/page/'+${reg.empId}}" th:text="${reg.empName}"></a>
+                </td>
+                <td th:text="${reg.registerAmount}"></td>
+                <td th:text="${reg.registerBalance}"></td>
+                <td th:text="${'￥'+reg.registerPrice+'元'}"></td>
+                <td th:if="${reg.registerBalance>0}">
+                    <button class="layui-btn layui-btn-normal" th:onclick="userRegister([[${reg.registerId}]]);">预约挂号
+                    </button>
+                </td>
+                <td th:if="${reg.registerBalance==0}">
+                    <button class="layui-btn layui-bg-red">已约满</button>
+                </td>
+            </tr>
+            <tr th:if="${registerList.isEmpty()}">
+                <td colspan="7" style="text-align: center"><span style="color: palevioletred">该科室暂未排班</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<!--底部-->
+<div style="float: left;width: 100%">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-register").attr("style", "color:green");
+
+    /**发送预约请求**/
+    function userRegister(registerId) {
+        const url = "/register/" + registerId;
+        $.post(url, function (result) {
+            layui.use('layer', function () {
+                const layer = layui.layer;
+                if (result === "login") {
+                    //提醒用户需先登录再进行预约，跳转登录界面
+                    layer.confirm('先登录再进行预约', {
+                        // skin: 'layui-layer-molv', //样式类名
+                        btn: ['立即登录', '再等等'] //按钮
+                    }, function () {
+                        $("#login").append("<span></span>");
+                        $("#login span").click();
+                    }, function () {
+                        layer.msg("若还未注册，请先注册再登录");
+                    });
+                } else layer.msg("预约成功");
+            });
+        });
+        return false;
+    }
+</script>
+</body>
+</html>

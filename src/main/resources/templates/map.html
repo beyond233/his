@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>铜山人民医院-交通导航</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <link rel="stylesheet" type="text/css" href="/iconfont/iconfont.css">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<!--头部导航-->
+<div th:insert="index::comHeadBar"></div>
+<!--中央内容-->
+<div style="margin: auto;width: 90%;height: 600px">
+    <div style="width: 50%;float: left">
+        <h2><span class="h2_border">交通地图</span></h2>
+        <iframe src="baidumap.html" width="700" height="560" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div style="width: 35%;float: left;margin-left: 90px">
+        <div style="margin-top: 100px" class="layui-icon">
+            <div style="margin-bottom: 25px">
+                <h2>医院地址</h2>
+                <hr class="layui-bg-gray" style="height: 4px;width: 120px">
+                <h4>江苏省南京市江宁区航金大道88号</h4>
+            </div>
+            <div style="margin-bottom: 25px">
+                <h2>交通路线</h2>
+                <hr class="layui-bg-gray" style="height: 4px;width: 120px">
+                <div style="margin-bottom: 5px">
+                    <span class="iconfont iconchangyonglogo18" style="color: red;font-size: 35px"></span>
+                    <span style="font-size: medium;font-weight: bold">地铁：</span>
+                    <span style="color: red;font-weight: bold">S1</span>号线——翔宇路南站——<span
+                        style="color: red;font-weight: bold">S9</span>号线——铜山站<br>
+                </div>
+                <div class="box">
+                    &nbsp;<span class="iconfont icongongjiao" style="color: blue;font-size: 27px"></span>
+                    <span style="font-size: medium;font-weight: bold">&nbsp;公交：</span>
+                    <span style="color: blue;font-weight: bold">851</span>路,&nbsp;
+                    <span style="color: blue;font-weight: bold">862</span>路,&nbsp;
+                    <span style="color: blue;font-weight: bold">939</span>路
+                </div>
+            </div>
+            <div style="margin-bottom: 25px">
+                <h2>联系我们</h2>
+                <hr class="layui-bg-gray" style="height: 4px;width: 120px">
+                <span>电话：77766688</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--底部-->
+<div style="float: left;width: 100%;margin-top: 60px;">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-map").attr("style", "color:green");
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>铜山人民医院-简介</title>
+</head>
+<head th:insert="commonPage::header">
+</head>
+<body>
+<!--头部导航栏-->
+<div th:insert="index::comHeadBar"></div>
+<!--中央内容-->
+<div style="width: 100%;">
+    <div style="margin: auto;width: 1220px;height: 1000px">
+        <div style="font-size: small;width: 100%;margin-bottom: 20px;padding-top: 20px">
+            <span>您现在的位置：</span>
+            <a th:href="@{/index.html}">首页&nbsp;&nbsp;></a>
+            <a href="#">医院概况&nbsp;&nbsp;&nbsp;></a>
+            <a th:href="@{/intro.html}">医院介绍</a>
+        </div>
+
+        <!--医院简介-->
+        <div>
+            <div style="width: 70%;float: left">
+                <img src="/images/buildIng.jpg">
+            </div>
+            <div style="width: 30%;float: left">
+                <blockquote class="layui-elem-quote">医院简介</blockquote>
+                <div>
+                    <p style="text-indent:2em;line-height:30px;">
+                        铜山医院是铜山镇疑难危急重症诊疗的医疗中心，医疗水平处于全国先进行列。医疗区占地500余亩，业务用房60余万平方米，编制床位4300张，在职员工1万余人
+                        ；有25个省级医疗质控中心，46个临床科室，9个医技科室；门诊设专科、专病门诊200余种，最高日门急诊量20000余人次；有标准手术室99间，日均外科手术500余台；有核磁共振11台、螺旋CT
+                        11台、直线加速器6台、PET-ECT
+                        2台、伽玛刀、达芬奇机器人手术系统等当今最先进的诊疗设备，设备总值22亿。2019年门、急诊量573.85万人次，出院病人27.90万人次，手术18.66万台次，平均住院日7.13天，日间手术占择期手术比例25.56%。医院持续加强抗菌药物管理、单病种质量管理、医院感染管理等工作，不断开拓医疗新技术，各项终末医疗质量效率指标取得明显提升，患者医疗安全保障得到进一步加强。
+                    </p>
+                    <p style="text-indent:2em;line-height:30px;">
+                        近年来不断创新优化门诊预约体系、多学科联合门诊、通科门诊、日间手术流程等医疗服务模式，患者就医体验和满意度持续提升；在成人活体肝脏移植、肺癌外科和微创治疗、心脏介入治疗、脑神经外科及功能神经外科、中西医结合治疗重症胰腺炎、胃肠微创手术、临床麻醉、功能磁共振、核医学等多个领域处于国内领先水平。
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!--底部-->
+<div style="margin-top: 100px" th:insert="index::comFooter"></div>
+
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-hospital").attr("style", "color:green");
+</script>
+</body>
+</html>

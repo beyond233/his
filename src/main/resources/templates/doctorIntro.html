@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>医生简介</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<div th:insert="index::comHeadBar"></div>
+<!--医生个人信息展示-->
+<div style="margin:0 auto;  width:1220px;height:700px">
+    <div>
+        <!--图片-->
+        <div style="float: left">
+            <img src="/images/user.jpg" style="width: 150px;height: 200px">
+        </div>
+        <div style="float: left;margin-left: 15px;margin-top: 20px;width: 600px">
+            <h1 th:text="${doctorInfo.empName}"></h1><br>
+            <b>性别：</b><span th:text="${doctorInfo.empSex}"></span><br>
+            <b>职称：</b><span th:text="${doctorInfo.empTitle}"></span><br>
+            <b>专长：</b><span th:text="${doctorInfo.empMajor}"></span><br>
+        </div>
+    </div>
+
+    <!--个人简介-->
+    <div style="float: left;margin-top: 15px">
+        <blockquote class="layui-elem-quote">个人简介</blockquote>
+        <p style="letter-spacing: 1px;margin-top: 5px;line-height: 40px"
+           th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+doctorInfo.empIntro}"></p>
+        <!--    </div>-->
+        <!--    <div style="float: left;margin-top: 15px">-->
+        <blockquote class="layui-elem-quote">出诊表</blockquote>
+        <table class="layui-table" style="margin:20px auto; width: 1120px">
+            <thead>
+            <tr>
+                <th>科室类型</th>
+                <th>科室名称</th>
+                <th>出诊时间</th>
+                <th>总号数</th>
+                <th>剩余号源</th>
+                <th>挂号费用</th>
+                <th>预约挂号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reg:${doctorReg}">
+                <td>科室类型</td>
+                <td>科室名称</td>
+                <td th:text="${#dates.format(reg.registerDate, 'yyyy-MM-dd')}">出诊时间</td>
+                <td th:text="${reg.registerAmount}">总号数</td>
+                <td th:text="${reg.registerBalance}">剩余号源</td>
+                <td th:text="${reg.registerPrice}">挂号费用</td>
+                <td>
+                    <button class="layui-btn layui-btn-normal" th:onclick="userRegister([[${reg.registerId}]]);">预约挂号
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--底部-->
+<div style="float: left;width: 100%">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+    $("#bar-a-docter").attr("style", "color:green");
+
+    /**患者点击按钮进行挂号**/
+    function userRegister(registerId) {
+        const url = "/register/" + registerId;
+        $.post(url, function (result) {
+            layui.use('layer', function () {
+                const layer = layui.layer;
+                if (result === "login") {
+                    //提醒用户需先登录再进行预约，跳转登录界面
+                    layer.confirm('先登录再进行预约', {
+                        skin: 'layui-layer-molv' //样式类名
+                        , btn: ['立即登录', '再等等'] //按钮
+                    }, function () {
+                        $("#login").append("<span></span>");
+                        $("#login span").click();
+                    }, function () {
+                        layer.msg("若还未注册，请先注册再登录");
+                    });
+                } else layer.msg("预约成功");
+            });
+        });
+        return false;
+    }
+</script>
+
+</body>
+</html>

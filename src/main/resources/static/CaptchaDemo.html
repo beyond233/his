@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>标题</title>
+    <link rel="stylesheet" th:href="@{}">
+    <script type="text/javascript" th:src="@{}"></script>
+    <script src="jquery.min.js"></script>
+</head>
+<body>
+
+<form action="/captcha/verify" method="post" id="captchaForm">
+    <fieldset>
+        <ul>
+            <li class="frame-style form-error">
+                <label class="user-icon" for="username"></label>
+                <input name="username" type="text" id="username"/>
+                <i>用户名</i>
+            </li>
+            <li class="frame-style form-error">
+                <label class="password-icon" for="password"></label>
+                <input name="password" type="password" id="password"/>
+                <i>密码</i>
+            </li>
+            <li class="frame-style form-error">
+                <label class="captcha-icon" for="captcha"></label>
+                <input name="captcha" type="text" id="captcha" class="captcha"/>
+                <i>验证码</i>
+                <div class="captcha-region">
+                    <img src="/captcha/img" id="img-captcha">
+                </div>
+            </li>
+
+        </ul>
+        <div class="space"></div>
+
+        <div class="clearfix">
+            <label class="inline">
+                <input type="checkbox" class="ace">
+                <span class="lbl">记住密码</span>
+            </label>
+
+            <button type="button" class="width-35 pull-right btn btn-sm btn-primary" onclick="login()">
+                <i class="icon-key"></i>
+                登录
+            </button>
+        </div>
+
+        <div class="space-4"></div>
+    </fieldset>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $("#img-captcha").on('click', function () {
+            $(this).attr('src', '/captcha/img?' + Math.floor(Math.random() * 10000)).fadeIn();
+        });
+    });
+
+    function login() {
+        $("#captchaForm").submit();
+    }
+</script>
+
+</body>
+</html>

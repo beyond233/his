@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond233.his.mapper.GuideSymptomMapper">
+    <resultMap id="BaseResultMap" type="com.beyond233.his.entity.GuideSymptom">
+        <id column="symptom_id" jdbcType="INTEGER" property="symptomId"/>
+        <id column="symptom_name" jdbcType="VARCHAR" property="symptomName"/>
+        <result column="bodypart_id" jdbcType="INTEGER" property="bodypartId"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        symptom_id, symptom_name, bodypart_id
+    </sql>
+    <select id="selectByExample" parameterType="com.beyond233.his.entity.GuideSymptomExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from guide_symptom
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from guide_symptom
+        where symptom_id = #{symptomId,jdbcType=INTEGER}
+        and symptom_name = #{symptomName,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete from guide_symptom
+        where symptom_id = #{symptomId,jdbcType=INTEGER}
+        and symptom_name = #{symptomName,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.beyond233.his.entity.GuideSymptomExample">
+        delete from guide_symptom
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.beyond233.his.entity.GuideSymptom">
+        insert into guide_symptom (symptom_id, symptom_name, bodypart_id
+        )
+        values (#{symptomId,jdbcType=INTEGER}, #{symptomName,jdbcType=VARCHAR}, #{bodypartId,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.beyond233.his.entity.GuideSymptom">
+        insert into guide_symptom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="symptomId != null">
+                symptom_id,
+            </if>
+            <if test="symptomName != null">
+                symptom_name,
+            </if>
+            <if test="bodypartId != null">
+                bodypart_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="symptomId != null">
+                #{symptomId,jdbcType=INTEGER},
+            </if>
+            <if test="symptomName != null">
+                #{symptomName,jdbcType=VARCHAR},
+            </if>
+            <if test="bodypartId != null">
+                #{bodypartId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.beyond233.his.entity.GuideSymptomExample"
+            resultType="java.lang.Long">
+        select count(*) from guide_symptom
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update guide_symptom
+        <set>
+            <if test="record.symptomId != null">
+                symptom_id = #{record.symptomId,jdbcType=INTEGER},
+            </if>
+            <if test="record.symptomName != null">
+                symptom_name = #{record.symptomName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bodypartId != null">
+                bodypart_id = #{record.bodypartId,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update guide_symptom
+        set symptom_id = #{record.symptomId,jdbcType=INTEGER},
+        symptom_name = #{record.symptomName,jdbcType=VARCHAR},
+        bodypart_id = #{record.bodypartId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.beyond233.his.entity.GuideSymptom">
+        update guide_symptom
+        <set>
+            <if test="bodypartId != null">
+                bodypart_id = #{bodypartId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where symptom_id = #{symptomId,jdbcType=INTEGER}
+        and symptom_name = #{symptomName,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.beyond233.his.entity.GuideSymptom">
+        update guide_symptom
+        set bodypart_id = #{bodypartId,jdbcType=INTEGER}
+        where symptom_id = #{symptomId,jdbcType=INTEGER}
+        and symptom_name = #{symptomName,jdbcType=VARCHAR}
+    </update>
+</mapper>

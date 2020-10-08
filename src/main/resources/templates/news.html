@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${newsVO.news.newsTitle}">这里是新闻标题</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="text/css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <link rel="stylesheet" href="#" th:href="@{/his/shadow.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+    <style>
+        p {
+            line-height: 30px
+        }
+
+        .div-p-line p {
+            margin: 30px auto
+        }
+    </style>
+</head>
+<body>
+<!--头部导航-->
+<div>
+    <div th:insert="index::comHeadBar"></div>
+</div>
+<!--中央内容-->
+<div style="margin: auto;width: 1220px;height: 1600px">
+    <div style="font-size: small;margin-bottom: 50px">
+        <span>您现在的位置：</span>
+        <a th:href="@{/index.html}">首页&nbsp;&nbsp;></a>
+        <a th:href="@{/news/page/home}">新闻中心</a>
+    </div>
+    <div style="padding-bottom: 800px">
+        <!--导航模块-->
+        <div style="float: left;width: 25%">
+            <div style="border: darkgrey 1px dashed;margin: auto;width: 90%">
+                <div style="height: 200px;margin-bottom: 10px">
+                    <img th:src="@{/images/s5e72d435e0155.jpg}" style="width: 100%;height: 180px">
+                    <hr style="color: darkgrey">
+                </div>
+                <div style="height: 60px;" th:each="hotNews:${hotNewsList}">
+                    <div style="margin: auto;padding: revert;width: 90%">
+                        <a th:href="@{'/news/page/'+${hotNews.newsId}}" th:text="${hotNews.newsTitle}">这里是新闻标题</a>
+                    </div>
+                    <hr style="color: darkgrey">
+                </div>
+
+            </div>
+        </div>
+        <!--新闻公告内容-->
+        <div style="float: left;width: 70%;margin-left: 20px" class="layui-icon">
+            <h2 style="margin-bottom: 35px" th:text="${newsVO.news.newsTitle}"></h2>
+            <hr>
+            <div style="font-size: medium;margin-top: 15px;margin-bottom: 100px">
+                <div style="float: left;width: 30%">
+                    <span class="layui-icon-log" style="font-size: larger;color: green"></span>
+                    <span th:text="${'时间:  '+newsVO.news.newsDate}"></span>
+                </div>
+                <div style="float: left;width: 25%">
+                    <span class="layui-icon-fire" style="font-size: larger;color: red"></span>
+                    <span th:text="${'浏览次数:  '+newsVO.news.newsClick+' 次'}"></span>
+                </div>
+                <div style="float: left;width: 44%">
+                    <span class="layui-icon-edit" style="font-size: larger;color: yellowgreen"></span>
+                    <span th:text="${'作者：'+newsVO.news.newsAuthor}"></span>
+                </div>
+            </div>
+            <div>
+                <img th:src="@{'/images/'+${newsVO.imgUrl.get(0)}}" style="width: 90%;height: 400px">
+            </div>
+            <div style="font-size: large" class="div-p-line">
+                <p style="text-indent: 30px;" th:text="${newsVO.news.newsArticle}">新闻公告内容</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--底部-->
+<div style="margin-top: 100px">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+</script>
+</body>
+</html>

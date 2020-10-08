@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>5XX</title>
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+</head>
+<body>
+<div>
+    <h2>error: [[${error}]]</h2>
+    <h2>时间戳：[[${timestamp}]]</h2>
+    <h2>status:[[${status}]]</h2>
+    <h2>exception:[[${exception}]]</h2>
+    <h2>message:[[${message}]]</h2>
+    <h2>errors:[[${errors}]]</h2>
+</div>
+<div class="layui-icon" style="margin: auto;width:100%">
+    <span class="layui-icon-404" style="font-size: 300px"></span>
+</div>
+
+</body>
+</html>

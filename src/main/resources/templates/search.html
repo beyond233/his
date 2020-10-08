@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>搜索结果</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="#" th:href="@{/webjars/layui/2.4.5/css/layui.css}" media="all">
+    <script src="#" th:src="@{/webjars/layui/2.4.5/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/his/utilbar.js}"></script>
+    <style type="text/css">@import "/his/navbar.css";</style>
+</head>
+<body>
+<!--头部导航-->
+<div th:insert="index::comHeadBar"></div>
+
+<!--中央内容-->
+<div style="margin: auto;width: 1200px">
+    <!--展示医生信息-->
+    <div style="float: left;width: 1200px;margin-top: 20px">
+        <blockquote class="layui-elem-quote" style="font-size: large">相关科室</blockquote>
+        <div style="margin: 20px auto;width: 1000px ">
+            <!--有数据-->
+            <div th:if="${empMap['count']>0}">
+                <div th:each="doc,item:${empMap['employees']}" style="float: left;width:250px;margin-bottom: 15px">
+                    <span style="color: #bfbfbf">>&nbsp;</span>
+                    <a th:href="@{'/employee/doctorIntro/page/'+${doc.empId}}" th:text="${doc.empName}"></a>
+                </div>
+            </div>
+            <!--无数据-->
+            <div th:if="${empMap['count']==0}">
+                <h2>没有找到相关医生信息</h2>
+            </div>
+        </div>
+    </div>
+
+    <!--展示科室信息-->
+    <div style="float: left;width: 1200px;margin-top: 20px">
+        <blockquote class="layui-elem-quote" style="font-size: large">相关科室</blockquote>
+        <div style="margin: 20px auto;width: 1000px ">
+            <!--有数据-->
+            <div th:if="${depMap['count']>0}">
+                <div th:each="dep,item:${depMap['departments']}" style="float: left;width:250px;margin-bottom: 15px">
+                    <span style="color: #bfbfbf">>&nbsp;</span>
+                    <a th:href="@{'/department/'+${dep.departmentId}}" th:text="${dep.departmentName}"></a>
+                </div>
+            </div>
+            <!--无数据-->
+            <div th:if="${depMap['count']==0}">
+                <h2>没有找到相关科室信息</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--底部-->
+<div style="float: left;width: 100%;margin-top: 500px">
+    <div th:insert="index::comFooter"></div>
+</div>
+
+<!--JS-->
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(demo)', function (data) {
+            console.log(data);
+        });
+        //…
+    });
+
+</script>
+
+
+</body>
+</html>
